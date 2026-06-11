@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Plug City — Admin OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-l:#E8C97A;--gold-d:#9A7A30;
+  --bg:#060606;--bg2:#0d0d0d;--bg3:#171717;--bg4:#1f1f1f;--bg5:#272727;
+  --text:#F0F0F0;--muted:#777;--muted2:#444;
+  --border:rgba(201,168,76,.1);--border2:rgba(201,168,76,.25);
+  --radius:5px;--sidebar:220px;
+  --green:#22c55e;--blue:#3b82f6;--orange:#f97316;--red:#ef4444;--purple:#a855f7;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold-d)}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar);flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);height:100vh;position:sticky;top:0;overflow-y:auto;display:flex;flex-direction:column}
+.sb-header{padding:18px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:13px;color:#000;flex-shrink:0}
+.sb-title{display:flex;flex-direction:column;line-height:1}
+.sb-title span:first-child{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sb-title span:last-child{font-size:9px;color:var(--muted);letter-spacing:3px;font-family:'Oswald',sans-serif}
+.admin-badge{margin:12px;padding:10px 12px;background:linear-gradient(135deg,rgba(201,168,76,.08),transparent),var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);display:flex;align-items:center;gap:8px}
+.ab-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.ab-text{font-family:'Oswald',sans-serif;font-size:11px;color:var(--gold);letter-spacing:2px}
+.nav-group{padding:12px 10px 4px;font-size:8px;letter-spacing:4px;color:var(--muted2);font-family:'Oswald',sans-serif}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 12px;margin:1px 6px;border-radius:var(--radius);cursor:pointer;color:var(--muted);font-size:11px;font-family:'Oswald',sans-serif;letter-spacing:1px;text-transform:uppercase;transition:all .2s;border:1px solid transparent;text-decoration:none}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:rgba(201,168,76,.09);color:var(--gold);border-color:var(--border)}
+.nav-icon{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.nav-alert{margin-left:auto;background:var(--red);color:#fff;font-size:8px;padding:1px 5px;border-radius:8px;font-weight:700}
+.nav-alert.warn{background:var(--orange)}
+.sb-live{margin:12px;padding:10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius)}
+.sb-live-label{font-size:8px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif;margin-bottom:6px}
+.live-stat{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.live-val{font-family:'Oswald',sans-serif;color:var(--gold)}
+
+/* ── MAIN ── */
+.main{flex:1;min-height:100vh;overflow-x:hidden}
+.topbar{height:52px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-title{font-family:'Oswald',sans-serif;font-size:14px;font-weight:500;letter-spacing:2px;color:var(--text)}
+.tb-tag{font-size:8px;letter-spacing:3px;color:var(--gold);font-family:'Oswald',sans-serif;background:rgba(201,168,76,.08);border:1px solid var(--border);padding:2px 6px;border-radius:2px}
+.tb-right{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:var(--radius);font-family:'Oswald',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s;text-decoration:none}
+.bg{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000}
+.bg:hover{opacity:.85}
+.bo{background:transparent;border:1px solid var(--border2);color:var(--gold)}
+.bo:hover{background:rgba(201,168,76,.07)}
+.bsm{padding:5px 9px;font-size:9px}
+.content{padding:20px}
+.view{display:none}
+.view.active{display:block}
+
+/* ── KPI STRIP ── */
+.kpi-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.kpi-label{font-size:9px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif;text-transform:uppercase;margin-bottom:4px}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;line-height:1}
+.kpi-trend{font-size:10px;margin-top:3px}
+.up{color:var(--green)}.dn{color:var(--red)}.fl{color:var(--muted)}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* ── CARD ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.ch{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ch h3{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:2px;font-weight:500}
+.cb{padding:16px}
+.chart-wrap{position:relative;height:180px}
+.chart-lg{height:220px}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse}
+th{font-size:9px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);text-transform:uppercase;white-space:nowrap}
+td{font-size:12px;padding:9px 10px;border-bottom:1px solid rgba(201,168,76,.05);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.015)}
+.tg{color:var(--gold);font-family:'Oswald',sans-serif;font-weight:500}
+.tm{color:var(--muted)}
+
+/* ── PILL ── */
+.pill{display:inline-flex;align-items:center;font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:1.5px;padding:2px 6px;border-radius:2px;text-transform:uppercase;white-space:nowrap}
+.pg{background:rgba(201,168,76,.1);border:1px solid var(--border);color:var(--gold)}
+.pn{background:rgba(34,197,94,.08);color:var(--green)}
+.po{background:rgba(249,115,22,.08);color:var(--orange)}
+.pb{background:rgba(59,130,246,.08);color:var(--blue)}
+.pr{background:rgba(239,68,68,.08);color:var(--red)}
+.pp{background:rgba(168,85,247,.08);color:var(--purple)}
+
+/* ── BAR INLINE ── */
+.ibar{display:flex;align-items:center;gap:8px}
+.ibar-track{flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.ibar-fill{height:100%;border-radius:2px}
+.if-gold{background:linear-gradient(90deg,var(--gold-d),var(--gold))}
+.if-green{background:var(--green)}
+.if-blue{background:var(--blue)}
+.if-orange{background:var(--orange)}
+
+/* ── ROW ITEM ── */
+.row-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(201,168,76,.05)}
+.row-item:last-child{border-bottom:none}
+.ri-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.ri-info{flex:1;min-width:0}
+.ri-name{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri-meta{font-size:10px;color:var(--muted)}
+.ri-val{font-family:'Oswald',sans-serif;font-size:13px;color:var(--gold);text-align:right;white-space:nowrap}
+
+/* ── ALERT FEED ── */
+.alert-item{display:flex;gap:10px;padding:10px;border-radius:var(--radius);margin-bottom:8px;background:var(--bg3);border-left:3px solid}
+.alert-item.green{border-color:var(--green)}
+.alert-item.orange{border-color:var(--orange)}
+.alert-item.blue{border-color:var(--blue)}
+.alert-item.red{border-color:var(--red)}
+.ai-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.ai-text{font-size:12px;line-height:1.5}
+.ai-time{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* ── FORM ── */
+.fg{margin-bottom:12px}
+.fl-label{font-size:10px;letter-spacing:2px;color:var(--muted);font-family:'Oswald',sans-serif;display:block;margin-bottom:5px;text-transform:uppercase}
+.fi{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:12px;padding:8px 12px;border-radius:var(--radius);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--gold)}
+.fi::placeholder{color:var(--muted2)}
+select.fi option{background:var(--bg3)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+textarea.fi{resize:vertical}
+
+/* ── TOGGLE ── */
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--bg4);border-radius:10px;transition:background .2s}
+.toggle input:checked~.toggle-track{background:var(--gold-d)}
+.toggle-thumb{position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s}
+.toggle input:checked~.toggle-thumb{transform:translateX(16px)}
+
+/* ── RELEASE CALENDAR ── */
+.cal-day{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(201,168,76,.05)}
+.cal-day:last-child{border-bottom:none}
+.cal-date{width:40px;text-align:center;flex-shrink:0}
+.cd-day{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);line-height:1}
+.cd-mon{font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif}
+.cal-content{flex:1}
+.cal-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.cal-meta{font-size:10px;color:var(--muted)}
+
+/* ── SOCIAL GRID ── */
+.social-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.soc-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.soc-icon{font-size:18px}
+.soc-name{font-family:'Oswald',sans-serif;font-size:13px;font-weight:500}
+.soc-handle{font-size:10px;color:var(--muted)}
+.soc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.soc-stat{text-align:center}
+.soc-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:1px}
+.soc-label{font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif}
+
+/* ── ARTIST ROSTER ── */
+.artist-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(201,168,76,.05)}
+.artist-row:last-child{border-bottom:none}
+.ar-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:16px;color:#000;flex-shrink:0}
+.ar-info{flex:1}
+.ar-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.ar-meta{font-size:10px;color:var(--muted)}
+.ar-rev{font-family:'Oswald',sans-serif;font-size:13px;color:var(--green);text-align:right}
+
+/* ── RESP ── */
+@media(max-width:1100px){.kpi-strip{grid-template-columns:repeat(3,1fr)}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){.sidebar{display:none}.g2,.g3,.g4{grid-template-columns:1fr}.kpi-strip{grid-template-columns:1fr 1fr}}
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9999;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+</style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-header">
+    <div class="sb-icon">PC</div>
+    <div class="sb-title"><span>PLUG CITY</span><span>Admin OS</span></div>
+  </div>
+  <div class="admin-badge"><div class="ab-dot"></div><div class="ab-text">Operations Live — Jun 9, 2026</div></div>
+
+  <div class="nav-group">Operations</div>
+  <a class="nav-item active" onclick="showView('command')"><span class="nav-icon">🖥️</span>Command Center</a>
+  <a class="nav-item" onclick="showView('revenue')"><span class="nav-icon">💰</span>Revenue OS</a>
+  <a class="nav-item" onclick="showView('social')"><span class="nav-icon">📡</span>Social Analytics</a>
+  <a class="nav-item" onclick="showView('release')"><span class="nav-icon">🗓️</span>Release Manager</a>
+
+  <div class="nav-group">Label</div>
+  <a class="nav-item" onclick="showView('roster')"><span class="nav-icon">🎤</span>Artist Roster</a>
+  <a class="nav-item" onclick="showView('fans-db')"><span class="nav-icon">👥</span>Fan Database</a>
+  <a class="nav-item" onclick="showView('contracts')"><span class="nav-icon">📋</span>Contracts</a>
+  <a class="nav-item" onclick="showView('anr')"><span class="nav-icon">🔍</span>A&R Pipeline<span class="nav-alert warn">5</span></a>
+
+  <div class="nav-group">Marketing</div>
+  <a class="nav-item" onclick="showView('campaigns')"><span class="nav-icon">📢</span>Campaigns<span class="nav-alert">2</span></a>
+  <a class="nav-item" onclick="showView('push')"><span class="nav-icon">📲</span>Push / Wallet</a>
+  <a class="nav-item" onclick="showView('press-kit')"><span class="nav-icon">📰</span>Press Kit Gen</a>
+
+  <div class="nav-group">Finance</div>
+  <a class="nav-item" onclick="showView('royalties')"><span class="nav-icon">🪙</span>Royalties</a>
+  <a class="nav-item" onclick="showView('sync-track')"><span class="nav-icon">🎬</span>Sync Tracking</a>
+  <a class="nav-item" onclick="showView('reports')"><span class="nav-icon">📊</span>Reports</a>
+
+  <div class="nav-group">Platform</div>
+  <a class="nav-item" onclick="showView('settings')"><span class="nav-icon">⚙️</span>Settings</a>
+  <a class="nav-item" href="index.html"><span class="nav-icon">🌐</span>Public Site</a>
+  <a class="nav-item" href="artist.html"><span class="nav-icon">🎵</span>Artist View</a>
+
+  <div style="margin-top:auto;padding:12px">
+    <div class="sb-live">
+      <div class="sb-live-label">Live Platform Stats</div>
+      <div class="live-stat"><span>Online fans</span><span class="live-val" id="live-fans">247</span></div>
+      <div class="live-stat"><span>Streams today</span><span class="live-val" id="live-streams">1,840</span></div>
+      <div class="live-stat"><span>Revenue today</span><span class="live-val" id="live-rev">$312</span></div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-title" id="tb-title">COMMAND CENTER</div>
+      <div class="tb-tag">MURKEMZ + BRYCE BREEZE</div>
+    </div>
+    <div class="tb-right">
+      <a href="index.html" class="btn bo bsm">← Site</a>
+      <button class="btn bo bsm" onclick="alert('Exporting full operations report as PDF...')">Export Report</button>
+      <button class="btn bg bsm" onclick="showModal('push-modal')">📲 Push Notification</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- COMMAND CENTER -->
+    <div class="view active" id="view-command">
+      <!-- KPI STRIP -->
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-label">MRR (Subscriptions)</div><div class="kpi-val" style="color:var(--green)">$9,189</div><div class="kpi-trend up">↑ +18% MoM</div></div>
+        <div class="kpi"><div class="kpi-label">Total Monthly Revenue</div><div class="kpi-val" style="color:var(--green)">$14,887</div><div class="kpi-trend up">↑ All-time high</div></div>
+        <div class="kpi"><div class="kpi-label">Active Fan Members</div><div class="kpi-val">847</div><div class="kpi-trend up">↑ +44 this week</div></div>
+        <div class="kpi"><div class="kpi-label">Spotify Listeners</div><div class="kpi-val">27.2K</div><div class="kpi-trend up">↑ +14% MoM</div></div>
+        <div class="kpi"><div class="kpi-label">Instagram Views</div><div class="kpi-val">2.1M</div><div class="kpi-trend up">↑ June 2026</div></div>
+        <div class="kpi"><div class="kpi-label">PHX Streams</div><div class="kpi-val" style="color:var(--gold)">15.5K</div><div class="kpi-trend up">↑ Trending fast</div></div>
+      </div>
+
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Revenue — 6 Month Trend</h3><span class="pill pg">All Streams</span></div>
+            <div class="cb"><div class="chart-wrap chart-lg"><canvas id="cmd-rev-chart"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Revenue Mix This Month</h3><span class="pill pg">$14,887 Total</span></div>
+            <div class="cb">
+              <div style="display:flex;gap:16px">
+                <div style="position:relative;width:120px;height:120px;flex-shrink:0"><canvas id="cmd-mix"></canvas></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:8px;justify-content:center">
+                  <div class="ibar"><div style="width:10px;height:10px;background:var(--gold);border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;min-width:120px">Fan Subscriptions</span><div class="ibar-track"><div class="ibar-fill if-gold" style="width:62%"></div></div><span style="font-size:11px;color:var(--gold);min-width:40px;text-align:right">$9,189</span></div>
+                  <div class="ibar"><div style="width:10px;height:10px;background:var(--blue);border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;min-width:120px">Merch &amp; Products</span><div class="ibar-track"><div class="ibar-fill if-blue" style="width:23%"></div></div><span style="font-size:11px;color:var(--blue);min-width:40px;text-align:right">$3,480</span></div>
+                  <div class="ibar"><div style="width:10px;height:10px;background:var(--green);border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;min-width:120px">Beat Portal</span><div class="ibar-track"><div class="ibar-fill if-green" style="width:5%"></div></div><span style="font-size:11px;color:var(--green);min-width:40px;text-align:right">$700</span></div>
+                  <div class="ibar"><div style="width:10px;height:10px;background:var(--orange);border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;min-width:120px">Sync Licensing</span><div class="ibar-track"><div class="ibar-fill if-orange" style="width:5%"></div></div><span style="font-size:11px;color:var(--orange);min-width:40px;text-align:right">$800</span></div>
+                  <div class="ibar"><div style="width:10px;height:10px;background:var(--purple);border-radius:2px;flex-shrink:0"></div><span style="font-size:11px;min-width:120px">Other</span><div class="ibar-track"><div class="ibar-fill" style="width:5%;background:var(--purple)"></div></div><span style="font-size:11px;color:var(--purple);min-width:40px;text-align:right">$718</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Live Alert Feed</h3><div class="ab-dot" style="margin:0"></div></div>
+            <div class="cb">
+              <div class="alert-item green"><div class="ai-dot" style="background:var(--green)"></div><div><div class="ai-text">PHX crossed <strong>15,500 streams</strong> on Spotify — trending in Phoenix market</div><div class="ai-time">2 min ago</div></div></div>
+              <div class="alert-item orange"><div class="ai-dot" style="background:var(--orange)"></div><div><div class="ai-text"><strong>3 new shoutout orders</strong> pending — $135 queued for Murkemz</div><div class="ai-time">18 min ago</div></div></div>
+              <div class="alert-item blue"><div class="ai-dot" style="background:var(--blue)"></div><div><div class="ai-text"><strong>44 new fan pass signups</strong> this week — 18 Murk Mode, 26 Street Pass</div><div class="ai-time">1 hr ago</div></div></div>
+              <div class="alert-item green"><div class="ai-dot" style="background:var(--green)"></div><div><div class="ai-text">Sync negotiation active — <strong>ESPN Sports Highlight</strong> for Survive</div><div class="ai-time">3 hrs ago</div></div></div>
+              <div class="alert-item blue"><div class="ai-dot" style="background:var(--blue)"></div><div><div class="ai-text"><strong>Netflix documentary supervisor</strong> reviewed PHX pitch — "under consideration"</div><div class="ai-time">5 hrs ago</div></div></div>
+              <div class="alert-item green"><div class="ai-dot" style="background:var(--green)"></div><div><div class="ai-text">Merch order — <strong>Ayatollah Bundle x3</strong> — $300 shipped to Phoenix</div><div class="ai-time">6 hrs ago</div></div></div>
+              <div class="alert-item orange"><div class="ai-dot" style="background:var(--orange)"></div><div><div class="ai-text">Royalty drop almost full — <strong>Survive stake: last 1 spot remaining</strong></div><div class="ai-time">8 hrs ago</div></div></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Quick Actions</h3></div>
+            <div class="cb">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                <button class="btn bg" style="justify-content:center" onclick="showModal('push-modal')">📲 Wallet Push</button>
+                <button class="btn bo" style="justify-content:center" onclick="showView('release')">🗓️ Schedule Drop</button>
+                <button class="btn bo" style="justify-content:center" onclick="showView('campaigns')">📢 Email Campaign</button>
+                <button class="btn bo" style="justify-content:center" onclick="showView('anr')">🔍 A&R Review</button>
+                <button class="btn bo" style="justify-content:center" onclick="showView('press-kit')">📰 Press Kit</button>
+                <button class="btn bo" style="justify-content:center" onclick="alert('Downloading full financial report PDF...')">📊 Export Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVENUE OS -->
+    <div class="view" id="view-revenue">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-label">Total MRR</div><div class="kpi-val" style="color:var(--green)">$9,189</div><div class="kpi-trend up">↑ Sub only</div></div>
+        <div class="kpi"><div class="kpi-label">Monthly All-In</div><div class="kpi-val" style="color:var(--green)">$14,887</div><div class="kpi-trend up">↑ June peak</div></div>
+        <div class="kpi"><div class="kpi-label">Platform Take (20%)</div><div class="kpi-val">$2,122</div><div class="kpi-trend fl">→ Plug City fee</div></div>
+        <div class="kpi"><div class="kpi-label">Artist Net</div><div class="kpi-val" style="color:var(--green)">$12,765</div><div class="kpi-trend up">↑ Murkemz take</div></div>
+        <div class="kpi"><div class="kpi-label">Projected Annual</div><div class="kpi-val">$178K</div><div class="kpi-trend up">↑ At current rate</div></div>
+        <div class="kpi"><div class="kpi-label">Revenue per Fan</div><div class="kpi-val">$17.58</div><div class="kpi-trend up">↑ Blended avg</div></div>
+      </div>
+      <div class="card">
+        <div class="ch"><h3>Full Revenue Stream Breakdown</h3><div style="display:flex;gap:6px"><button class="btn bo bsm" onclick="alert('Downloading CSV...')">Export</button><button class="btn bg bsm">Monthly</button></div></div>
+        <table>
+          <tr><th>Revenue Stream</th><th>Gross</th><th>Platform (20%)</th><th>Artist Net</th><th>vs Last Mo.</th><th>Projection</th></tr>
+          <tr><td>Fan Subscriptions — Street ($4)</td><td>$1,248</td><td class="tm">$250</td><td class="tg">$998</td><td><span class="pill pn">↑ +8%</span></td><td class="tm">$1,350</td></tr>
+          <tr><td>Fan Subscriptions — Murk Mode ($12)</td><td>$5,016</td><td class="tm">$1,003</td><td class="tg">$4,013</td><td><span class="pill pn">↑ +22%</span></td><td class="tm">$5,800</td></tr>
+          <tr><td>Fan Subscriptions — Ayatollah ($25)</td><td>$2,925</td><td class="tm">$585</td><td class="tg">$2,340</td><td><span class="pill pn">↑ +31%</span></td><td class="tm">$3,500</td></tr>
+          <tr><td>Merch Sales (murkmerch.com)</td><td>$3,480</td><td class="tm">$0</td><td class="tg">$3,480</td><td><span class="pill pn">↑ +12%</span></td><td class="tm">$4,200</td></tr>
+          <tr><td>Beat Portal Licenses</td><td>$700</td><td class="tm">$140</td><td class="tg">$560</td><td><span class="pill pg">New</span></td><td class="tm">$1,200</td></tr>
+          <tr><td>Shoutout Orders</td><td>$170</td><td class="tm">$34</td><td class="tg">$136</td><td><span class="pill pg">Stable</span></td><td class="tm">$400</td></tr>
+          <tr><td>Sync Licensing (Netflix/ESPN)</td><td>$800</td><td class="tm">$0</td><td class="tg">$800</td><td><span class="pill pb">New deal</span></td><td class="tm">$2,400</td></tr>
+          <tr><td>Fan Ownership Royalty Drops</td><td>$548</td><td class="tm">$110</td><td class="tg">$438</td><td><span class="pill pn">Active</span></td><td class="tm">$1,000</td></tr>
+          <tr><td>Music Sales (EVEN model)</td><td>$0</td><td class="tm">—</td><td class="tg">$0</td><td><span class="pill po">Launching</span></td><td class="tm">$800</td></tr>
+          <tr><td>Spotify Streaming (DSP)</td><td>$82</td><td class="tm">—</td><td class="tg">$82</td><td><span class="pill pn">↑ +14%</span></td><td class="tm">$200</td></tr>
+          <tr style="font-weight:600"><td>TOTAL</td><td style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:16px">$14,969</td><td class="tm">$2,122</td><td style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:16px">$12,847</td><td><span class="pill pn">↑ All-time</span></td><td style="color:var(--gold);font-family:'Oswald',sans-serif">$19,850</td></tr>
+        </table>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><h3>Subscription Growth</h3></div>
+          <div class="cb"><div class="chart-wrap"><canvas id="sub-growth"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Revenue Growth (All Time)</h3></div>
+          <div class="cb"><div class="chart-wrap"><canvas id="rev-all"></canvas></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL ANALYTICS -->
+    <div class="view" id="view-social">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-label">IG Monthly Views</div><div class="kpi-val">2.1M</div><div class="kpi-trend up">↑ June 2026</div></div>
+        <div class="kpi"><div class="kpi-label">IG Followers</div><div class="kpi-val">11.2K</div><div class="kpi-trend up">↑ @murkemz</div></div>
+        <div class="kpi"><div class="kpi-label">Spotify Listeners</div><div class="kpi-val">27.2K</div><div class="kpi-trend up">↑ Monthly</div></div>
+        <div class="kpi"><div class="kpi-label">Spotify Followers</div><div class="kpi-val">8,293</div><div class="kpi-trend up">↑ Growing</div></div>
+        <div class="kpi"><div class="kpi-label">PHX Streams</div><div class="kpi-val">15.5K</div><div class="kpi-trend up">↑ New single</div></div>
+        <div class="kpi"><div class="kpi-label">All-Time Top Stream</div><div class="kpi-val">541K</div><div class="kpi-trend fl">Hadouken RMX</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><h3>Platform-by-Platform</h3></div>
+          <div class="cb">
+            <div class="g2" style="gap:10px">
+              <div class="social-card"><div class="soc-header"><span class="soc-icon">📸</span><div><div class="soc-name">Instagram</div><div class="soc-handle">@murkemz</div></div></div><div class="soc-stats"><div class="soc-stat"><div class="soc-val">11.2K</div><div class="soc-label">Followers</div></div><div class="soc-stat"><div class="soc-val">2.1M</div><div class="soc-label">Mo. Views</div></div></div></div>
+              <div class="social-card"><div class="soc-header"><span class="soc-icon">🎵</span><div><div class="soc-name">Spotify</div><div class="soc-handle">Murkemz</div></div></div><div class="soc-stats"><div class="soc-stat"><div class="soc-val">27.2K</div><div class="soc-label">Listeners</div></div><div class="soc-stat"><div class="soc-val">8,293</div><div class="soc-label">Followers</div></div></div></div>
+              <div class="social-card"><div class="soc-header"><span class="soc-icon">📱</span><div><div class="soc-name">TikTok</div><div class="soc-handle">@murktheayatollah</div></div></div><div class="soc-stats"><div class="soc-stat"><div class="soc-val">↑</div><div class="soc-label">Growing</div></div><div class="soc-stat"><div class="soc-val">Active</div><div class="soc-label">Posting</div></div></div></div>
+              <div class="social-card"><div class="soc-header"><span class="soc-icon">▶️</span><div><div class="soc-name">YouTube</div><div class="soc-handle">@murkemz2001</div></div></div><div class="soc-stats"><div class="soc-stat"><div class="soc-val">Active</div><div class="soc-label">Channel</div></div><div class="soc-stat"><div class="soc-val">MVs</div><div class="soc-label">Music Videos</div></div></div></div>
+              <div class="social-card"><div class="soc-header"><span class="soc-icon">✖️</span><div><div class="soc-name">Twitter / X</div><div class="soc-handle">@Murkemz</div></div></div><div class="soc-stats"><div class="soc-stat"><div class="soc-val">Active</div><div class="soc-label">Profile</div></div><div class="soc-stat"><div class="soc-val">Ice-T</div><div class="soc-label">Co-signed</div></div></div></div>
+              <div class="social-card"><div class="soc-header"><span class="soc-icon">👥</span><div><div class="soc-name">Facebook</div><div class="soc-handle">JMurkemz</div></div></div><div class="soc-stats"><div class="soc-stat"><div class="soc-val">Page</div><div class="soc-label">Official</div></div><div class="soc-stat"><div class="soc-val">Active</div><div class="soc-label">Status</div></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Spotify Stream History</h3></div>
+            <div class="cb"><div class="chart-wrap"><canvas id="spotify-chart"></canvas></div></div>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Co-Signs &amp; Press Value</h3></div>
+            <div class="cb" style="padding:0 16px">
+              <div class="row-item"><div class="ri-icon">🧊</div><div class="ri-info"><div class="ri-name">Ice-T — Grammy Red Carpet</div><div class="ri-meta">Twitter co-sign → mentorship</div></div><div class="ri-val" style="color:var(--gold)">Priceless</div></div>
+              <div class="row-item"><div class="ri-icon">🎤</div><div class="ri-info"><div class="ri-name">Inspectah Deck — Wu-Tang Clan</div><div class="ri-meta">Survive (244K streams)</div></div><div class="ri-val">$$$</div></div>
+              <div class="row-item"><div class="ri-icon">🎤</div><div class="ri-info"><div class="ri-name">Freeway — Roc-A-Fella Records</div><div class="ri-meta">Against All Odds — Jan 2026</div></div><div class="ri-val">$$$</div></div>
+              <div class="row-item"><div class="ri-icon">📻</div><div class="ri-info"><div class="ri-name">Hot 97 — Funk Flex</div><div class="ri-meta">National radio platform</div></div><div class="ri-val">Reach</div></div>
+              <div class="row-item"><div class="ri-icon">📻</div><div class="ri-info"><div class="ri-name">Sway's Universe — 5 Fingers</div><div class="ri-meta">Legendary freestyle challenge</div></div><div class="ri-val">Credibility</div></div>
+              <div class="row-item"><div class="ri-icon">🏆</div><div class="ri-info"><div class="ri-name">Phoenix New Times — 2025</div><div class="ri-meta">Best Hip-Hop Artist award</div></div><div class="ri-val">Award</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELEASE MANAGER -->
+    <div class="view" id="view-release">
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Release Calendar — Q3 2026</h3><button class="btn bg bsm" onclick="showModal('release-modal')">+ New Drop</button></div>
+            <div class="cb" style="padding:0 16px">
+              <div class="cal-day"><div class="cal-date"><div class="cd-day">14</div><div class="cd-mon">Jul</div></div><div class="cal-content"><div class="cal-title">PHX Release Show — Crescent Ballroom</div><div class="cal-meta">Live event · Phoenix, AZ · Murk Mode early ticket access active</div></div><span class="pill po">Upcoming</span></div>
+              <div class="cal-day"><div class="cal-date"><div class="cd-day">22</div><div class="cd-mon">Jul</div></div><div class="cal-content"><div class="cal-title">Plug City Pop-Up &amp; Listening Party</div><div class="cal-meta">Downtown Phoenix · Free for Ayatollah members</div></div><span class="pill po">Upcoming</span></div>
+              <div class="cal-day"><div class="cal-date"><div class="cd-day">01</div><div class="cd-mon">Aug</div></div><div class="cal-content"><div class="cal-title">New Single — Untitled (working title)</div><div class="cal-meta">48hr early access for Murk Mode · Global DSP release +48hrs</div></div><span class="pill pb">Scheduled</span></div>
+              <div class="cal-day"><div class="cal-date"><div class="cd-day">15</div><div class="cd-mon">Aug</div></div><div class="cal-content"><div class="cal-title">Merch Drop — New Colorway</div><div class="cal-meta">Murk Pass members get 1hr early access</div></div><span class="pill pb">Scheduled</span></div>
+              <div class="cal-day"><div class="cal-date"><div class="cd-day">TBD</div><div class="cd-mon">Q4</div></div><div class="cal-content"><div class="cal-title">New EP / Album — 2026</div><div class="cal-meta">Full platform exclusive window · Billboard eligible via EVEN model</div></div><span class="pill" style="background:rgba(255,255,255,.05);color:var(--muted)">Planning</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Billboard Strategy — EVEN Model</h3></div>
+            <div class="cb">
+              <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">Music sold directly on the Plug City platform via the EVEN model counts toward Billboard chart positions — same as physical sales. $10 album = 10 chart-eligible units. Streaming = 1,500 streams = 1 unit.</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+                <div style="text-align:center;padding:12px;background:var(--bg3);border-radius:4px"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold)">$20</div><div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif">Album Price</div></div>
+                <div style="text-align:center;padding:12px;background:var(--bg3);border-radius:4px"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold)">20</div><div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif">Chart Units</div></div>
+                <div style="text-align:center;padding:12px;background:var(--bg3);border-radius:4px"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green)">100%</div><div style="font-size:9px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif">Kept by Artist</div></div>
+              </div>
+              <button class="btn bg" onclick="alert('EVEN model activated for next release. Direct fan sales will count toward Billboard chart positions.')">Activate EVEN Model for Next Drop</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Content Scheduler</h3></div>
+            <div class="cb">
+              <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Schedule IG posts, TikTok clips, and community updates directly from the admin.</p>
+              <div class="fg"><label class="fl-label">Platform</label><select class="fi"><option>Instagram</option><option>TikTok</option><option>Twitter / X</option><option>Facebook</option><option>Community Feed</option></select></div>
+              <div class="fg"><label class="fl-label">Content</label><textarea class="fi" rows="3" placeholder="PHX is taking over Phoenix. Stream it everywhere now 🔥 #PlugCity #PHX #Phoenix"></textarea></div>
+              <div class="fr">
+                <div class="fg"><label class="fl-label">Schedule Date</label><input type="date" class="fi"/></div>
+                <div class="fg"><label class="fl-label">Time</label><input type="time" class="fi" value="12:00"/></div>
+              </div>
+              <button class="btn bg" onclick="alert('Post scheduled! Will auto-publish at selected time.')">📅 Schedule Post</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Release Checklist — PHX</h3><span class="pill pn">Active</span></div>
+            <div class="cb">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--gold)"/>Track uploaded to Murk Radio</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--gold)"/>Distributed to Spotify / Apple / DSPs</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--gold)"/>48hr exclusivity window set for Murk Mode</label>
+                <label style="display:flex;align-items:center;gap=8px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--gold)"/>Wallet pass push notification sent (847 fans)</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--gold)"/>Press release drafted</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"/>Billboard tracking via EVEN model</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"/>Sync pitch submitted to supervisors</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--gold)"/>Fan ownership drop opened</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTIST ROSTER -->
+    <div class="view" id="view-roster">
+      <div class="card">
+        <div class="ch"><h3>Platform Artist Roster</h3><button class="btn bg bsm" onclick="showModal('artist-modal')">+ Add Artist</button></div>
+        <table>
+          <tr><th>Artist</th><th>Status</th><th>Genre</th><th>Listeners</th><th>Fan Pass Members</th><th>Platform Rev (Mo.)</th><th>Deal Type</th><th>Actions</th></tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold-d),var(--gold));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:12px;color:#000">M</div>Murkemz</div></td>
+            <td><span class="pill pn">Flagship</span></td>
+            <td class="tm">Trench Rap / Boom Bap</td>
+            <td>27,256</td>
+            <td class="tg">847</td>
+            <td style="color:var(--green)">$14,887</td>
+            <td><span class="pill pg">Label CEO</span></td>
+            <td><button class="btn bo bsm">Manage</button></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:11px">+</div>Artist Slot 2</div></td>
+            <td><span class="pill po">Recruiting</span></td>
+            <td class="tm">Phoenix Artist</td>
+            <td class="tm">—</td>
+            <td class="tm">—</td>
+            <td class="tm">—</td>
+            <td><span class="pill" style="background:rgba(255,255,255,.04);color:var(--muted)">Open</span></td>
+            <td><button class="btn bg bsm" onclick="showView('anr')">Review Apps</button></td>
+          </tr>
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:8px"><div style="width:28px;height:28px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:11px">+</div>Artist Slot 3</div></td>
+            <td><span class="pill po">Recruiting</span></td>
+            <td class="tm">Regional Artist</td>
+            <td class="tm">—</td>
+            <td class="tm">—</td>
+            <td class="tm">—</td>
+            <td><span class="pill" style="background:rgba(255,255,255,.04);color:var(--muted)">Open</span></td>
+            <td><button class="btn bg bsm" onclick="showView('anr')">Review Apps</button></td>
+          </tr>
+        </table>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><h3>Artist Onboarding Checklist</h3></div>
+          <div class="cb">
+            <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Every new artist signing triggers this automated onboarding flow.</p>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--green)">✓</span>ID verification (KYA — Know Your Artist)</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--green)">✓</span>W-9 / W-8 tax form collection</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--green)">✓</span>Payment setup (direct deposit or wire)</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--green)">✓</span>Master rights confirmation</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--green)">✓</span>Contract signed (e-sign)</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--green)">✓</span>Artist page created on platform</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--gold)">→</span>First release scheduled</div>
+              <div style="display:flex;gap:8px;align-items:center"><span style="color:var(--muted)">○</span>Fan pass tiers configured</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Platform Deal Structure</h3></div>
+          <div class="cb">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="padding:12px;background:var(--bg3);border-radius:4px"><div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--gold)">Distribution Deal</div><div style="font-size:11px;color:var(--muted)">Artist keeps 90%+. Plug City handles distribution, promotion, platform access. No masters transfer.</div></div>
+              <div style="padding:12px;background:var(--bg3);border-radius:4px"><div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--gold)">Platform License</div><div style="font-size:11px;color:var(--muted)">Artist keeps 80%. Plug City takes 20% platform fee on all revenue generated on the platform.</div></div>
+              <div style="padding:12px;background:var(--bg3);border-radius:4px"><div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--gold)">Full Label Deal</div><div style="font-size:11px;color:var(--muted)">Artist keeps 75%+. Plug City invests in recording, promotion, tour support. No 360 deals. Artists keep masters.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAN DATABASE -->
+    <div class="view" id="view-fans-db">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-label">Total Fans</div><div class="kpi-val">847</div><div class="kpi-trend up">↑ +44 this week</div></div>
+        <div class="kpi"><div class="kpi-label">Email Open Rate</div><div class="kpi-val">38%</div><div class="kpi-trend up">↑ 2x avg</div></div>
+        <div class="kpi"><div class="kpi-label">Wallet Pass Holders</div><div class="kpi-val">771</div><div class="kpi-trend up">91% adoption</div></div>
+        <div class="kpi"><div class="kpi-label">Avg. Lifetime Value</div><div class="kpi-val">$184</div><div class="kpi-trend up">↑ Growing</div></div>
+        <div class="kpi"><div class="kpi-label">Superfans (>$100/mo)</div><div class="kpi-val">34</div><div class="kpi-trend up">↑ Ayatollah tier</div></div>
+        <div class="kpi"><div class="kpi-label">Churn Rate</div><div class="kpi-val">8%</div><div class="kpi-trend up">↓ Below avg</div></div>
+      </div>
+      <div class="card">
+        <div class="ch"><h3>Fan Database</h3><div style="display:flex;gap:6px"><button class="btn bo bsm" onclick="alert('Exporting to CSV...')">Export CSV</button><button class="btn bg bsm" onclick="showModal('email-modal')">📧 Email Campaign</button></div></div>
+        <table>
+          <tr><th>Fan</th><th>Tier</th><th>Location</th><th>Joined</th><th>Total Spent</th><th>Streams</th><th>Wallet Pass</th><th>Status</th></tr>
+          <tr><td>AZ_Plugged_Up</td><td><span class="pill pg">Ayatollah</span></td><td>Phoenix, AZ</td><td>Jan 26</td><td class="tg">$380</td><td>1,240</td><td style="color:var(--green)">✓</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>RealMurkFan</td><td><span class="pill pg">Ayatollah</span></td><td>New York, NY</td><td>Feb 26</td><td class="tg">$290</td><td>890</td><td style="color:var(--green)">✓</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>PhoenixRising</td><td><span class="pill pb">Murk Mode</span></td><td>Phoenix, AZ</td><td>Mar 26</td><td class="tg">$168</td><td>743</td><td style="color:var(--green)">✓</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>JayMurk_Fan</td><td><span class="pill pb">Murk Mode</span></td><td>Philadelphia, PA</td><td>Mar 26</td><td class="tg">$156</td><td>847</td><td style="color:var(--green)">✓</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>TucsonPlug</td><td><span class="pill" style="background:rgba(255,255,255,.04);color:var(--muted)">Street</span></td><td>Tucson, AZ</td><td>Apr 26</td><td class="tg">$56</td><td>412</td><td style="color:var(--muted)">—</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>WestCoast_Murk</td><td><span class="pill pb">Murk Mode</span></td><td>Los Angeles, CA</td><td>Apr 26</td><td class="tg">$144</td><td>580</td><td style="color:var(--green)">✓</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>PHXNative</td><td><span class="pill pg">Ayatollah</span></td><td>Phoenix, AZ</td><td>Jan 26</td><td class="tg">$420</td><td>1,100</td><td style="color:var(--green)">✓</td><td><span class="pill pn">Active</span></td></tr>
+          <tr><td>DrillBoss_NYC</td><td><span class="pill pb">Murk Mode</span></td><td>New York, NY</td><td>May 26</td><td class="tg">$84</td><td>320</td><td style="color:var(--muted)">—</td><td><span class="pill pn">Active</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- A&R PIPELINE -->
+    <div class="view" id="view-anr">
+      <div class="card">
+        <div class="ch"><h3>A&R Pipeline — Artist Applications</h3><span class="pill po">5 Pending Review</span></div>
+        <table>
+          <tr><th>Artist</th><th>Location</th><th>Genre</th><th>Listeners</th><th>IG Followers</th><th>Deal Ask</th><th>Score</th><th>Action</th></tr>
+          <tr><td><strong>BadBlood_AZ</strong></td><td>Tempe, AZ</td><td>Trap / Boom Bap</td><td>12,400</td><td>8,200</td><td>Distribution</td><td><span style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:16px">84</span></td><td><button class="btn bg bsm" onclick="alert('Opening full A&R review for BadBlood_AZ...')">Review</button></td></tr>
+          <tr><td><strong>SunCity_Rell</strong></td><td>Phoenix, AZ</td><td>Hip-Hop / R&B</td><td>6,800</td><td>14,000</td><td>Platform License</td><td><span style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:16px">76</span></td><td><button class="btn bg bsm">Review</button></td></tr>
+          <tr><td><strong>Desert_Don</strong></td><td>Tucson, AZ</td><td>Drill</td><td>3,200</td><td>5,100</td><td>Distribution</td><td><span style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:16px">61</span></td><td><button class="btn bg bsm">Review</button></td></tr>
+          <tr><td><strong>NyBorn_Phoenix</strong></td><td>Phoenix, AZ</td><td>Boom Bap</td><td>2,100</td><td>3,400</td><td>Full Deal</td><td><span style="color:var(--orange);font-family:'Bebas Neue',sans-serif;font-size:16px">55</span></td><td><button class="btn bg bsm">Review</button></td></tr>
+          <tr><td><strong>MidnightThug_LA</strong></td><td>Los Angeles, CA</td><td>Trap</td><td>28,000</td><td>22,000</td><td>Platform License</td><td><span style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:16px">88</span></td><td><button class="btn bg bsm">Review</button></td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="ch"><h3>A&R Scoring Rubric</h3></div>
+        <div class="cb">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:12px">
+            <div style="padding:10px;background:var(--bg3);border-radius:4px"><div style="font-family:'Oswald',sans-serif;color:var(--gold);margin-bottom:4px">Social Momentum (25pts)</div><div style="color:var(--muted)">Follower growth rate, engagement ratio, viral potential</div></div>
+            <div style="padding:10px;background:var(--bg3);border-radius:4px"><div style="font-family:'Oswald',sans-serif;color:var(--gold);margin-bottom:4px">Stream Velocity (25pts)</div><div style="color:var(--muted)">Monthly listeners, stream growth, Spotify saves rate</div></div>
+            <div style="padding:10px;background:var(--bg3);border-radius:4px"><div style="font-family:'Oswald',sans-serif;color:var(--gold);margin-bottom:4px">Market Fit (25pts)</div><div style="color:var(--muted)">Genre alignment, demographic overlap, co-sign value</div></div>
+            <div style="padding:10px;background:var(--bg3);border-radius:4px"><div style="font-family:'Oswald',sans-serif;color:var(--gold);margin-bottom:4px">Catalog Quality (25pts)</div><div style="color:var(--muted)">Track quality, consistency, lyrical content, production</div></div>
+            <div style="padding:10px;background:var(--bg3);border-radius:4px"><div style="font-family:'Oswald',sans-serif;color:var(--green);margin-bottom:4px">Score 80+ = Strong Sign</div><div style="color:var(--muted)">Fast-track to Murkemz + Bryce meeting</div></div>
+            <div style="padding:10px;background:var(--bg3);border-radius:4px"><div style="font-family:'Oswald',sans-serif;color:var(--orange);margin-bottom:4px">Score 50-79 = Monitor</div><div style="color:var(--muted)">Watch for 90 days, check growth trajectory</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMPAIGNS -->
+    <div class="view" id="view-campaigns">
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Email Campaigns</h3><button class="btn bg bsm" onclick="showModal('email-modal')">+ New Campaign</button></div>
+            <table>
+              <tr><th>Campaign</th><th>Sent To</th><th>Open Rate</th><th>Click Rate</th><th>Status</th></tr>
+              <tr><td>PHX Drop Announcement</td><td>847 fans</td><td class="tg">41%</td><td>18%</td><td><span class="pill pn">Delivered</span></td></tr>
+              <tr><td>Ayatollah Bundle Sale</td><td>535 Murk+</td><td class="tg">38%</td><td>22%</td><td><span class="pill pn">Delivered</span></td></tr>
+              <tr><td>Royalty Drop — PHX</td><td>535 Murk+</td><td class="tg">44%</td><td>31%</td><td><span class="pill pn">Delivered</span></td></tr>
+              <tr><td>Show Presale — Crescent</td><td>847 fans</td><td class="tg">52%</td><td>28%</td><td><span class="pill po">Scheduled</span></td></tr>
+              <tr><td>Monthly Member Newsletter</td><td>847 fans</td><td class="tm">—</td><td class="tm">—</td><td><span class="pill pb">Draft</span></td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Wallet Pass Pushes</h3><button class="btn bg bsm" onclick="showModal('push-modal')">+ Send Push</button></div>
+            <table>
+              <tr><th>Message</th><th>Sent</th><th>Opened</th><th>Date</th></tr>
+              <tr><td>PHX is LIVE 🔥 Stream now</td><td>771</td><td class="tg" style="color:var(--green)">91%</td><td class="tm">Jun 7</td></tr>
+              <tr><td>3 Ayatollah spots left — grab yours</td><td>771</td><td class="tg" style="color:var(--green)">88%</td><td class="tm">Jun 5</td></tr>
+              <tr><td>Show tickets go live in 1hr</td><td>535</td><td class="tg" style="color:var(--green)">94%</td><td class="tm">Jun 1</td></tr>
+              <tr><td>New Murk Radio session dropping</td><td>771</td><td class="tg" style="color:var(--green)">86%</td><td class="tm">May 28</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Campaign Benchmarks</h3></div>
+            <div class="cb">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;font-size:12px"><span>Our email open rate</span><span style="color:var(--green)">38-52% ↑</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px"><span>Industry average email</span><span class="tm">20-22%</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px"><span>Our wallet pass open rate</span><span style="color:var(--green)">86-94% ↑↑</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px"><span>Industry wallet pass avg</span><span class="tm">~85-90%</span></div>
+              </div>
+              <div style="margin-top:12px;padding:10px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:4px;font-size:11px;color:var(--green);line-height:1.5">Wallet passes deliver 4x the reach of email. Priority channel for all major announcements.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROYALTIES -->
+    <div class="view" id="view-royalties">
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-label">Spotify Payout Est.</div><div class="kpi-val">$82</div><div class="kpi-trend up">↑ This month</div></div>
+        <div class="kpi"><div class="kpi-label">Fan Ownership Drops</div><div class="kpi-val">$548</div><div class="kpi-trend up">↑ Sold this cycle</div></div>
+        <div class="kpi"><div class="kpi-label">Royalty Income (YTD)</div><div class="kpi-val">$1,840</div><div class="kpi-trend up">↑ All DSPs</div></div>
+        <div class="kpi"><div class="kpi-label">Masters Owned</div><div class="kpi-val">100%</div><div class="kpi-trend fl">All releases</div></div>
+        <div class="kpi"><div class="kpi-label">1099s Due</div><div class="kpi-val">3</div><div class="kpi-trend fl">Jan 2027</div></div>
+        <div class="kpi"><div class="kpi-label">PRO (ASCAP/BMI)</div><div class="kpi-val">Registered</div><div class="kpi-trend fl">Active</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><h3>DSP Royalty Tracker</h3></div>
+          <table>
+            <tr><th>Platform</th><th>Streams</th><th>Rate/Stream</th><th>Est. Payout</th><th>Status</th></tr>
+            <tr><td>Spotify</td><td>27,256/mo</td><td class="tm">$0.003-0.005</td><td class="tg">$82-136</td><td><span class="pill pn">Monthly</span></td></tr>
+            <tr><td>Apple Music</td><td>—</td><td class="tm">$0.007-0.01</td><td class="tg">Est. $40+</td><td><span class="pill pb">Quarterly</span></td></tr>
+            <tr><td>Tidal</td><td>—</td><td class="tm">$0.01</td><td class="tg">Est. $20+</td><td><span class="pill pb">Quarterly</span></td></tr>
+            <tr><td>YouTube Music</td><td>—</td><td class="tm">$0.002</td><td class="tg">Est. $15+</td><td><span class="pill pb">Monthly</span></td></tr>
+            <tr><td>Amazon Music</td><td>—</td><td class="tm">$0.004</td><td class="tg">Est. $10+</td><td><span class="pill pb">Quarterly</span></td></tr>
+          </table>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Fan Ownership Drop Status</h3></div>
+          <table>
+            <tr><th>Track</th><th>Stake Offered</th><th>Price/Stake</th><th>Sold</th><th>Remaining</th><th>Total Raised</th></tr>
+            <tr><td class="tg">PHX (2026)</td><td>1% each</td><td>$199</td><td>7 of 10</td><td style="color:var(--orange)">3 left</td><td class="tg">$1,393</td></tr>
+            <tr><td class="tg">Survive ft. Deck</td><td>0.5% each</td><td>$349</td><td>9 of 10</td><td style="color:var(--red)">1 left</td><td class="tg">$3,141</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SYNC TRACKING -->
+    <div class="view" id="view-sync-track">
+      <div class="kpi-strip" style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi"><div class="kpi-label">Sync Revenue (YTD)</div><div class="kpi-val">$1,370</div><div class="kpi-trend up">↑ Growing</div></div>
+        <div class="kpi"><div class="kpi-label">Active Submissions</div><div class="kpi-val">4</div><div class="kpi-trend fl">→ Under review</div></div>
+        <div class="kpi"><div class="kpi-label">Potential Pipeline</div><div class="kpi-val">$3,200+</div><div class="kpi-trend up">↑ If all convert</div></div>
+        <div class="kpi"><div class="kpi-label">Platform Take</div><div class="kpi-val">0%</div><div class="kpi-trend fl">Artist keeps all</div></div>
+      </div>
+      <div class="card">
+        <div class="ch"><h3>Full Sync Licensing Pipeline</h3><button class="btn bg bsm" onclick="alert('Opening sync pitch builder...')">+ New Pitch</button></div>
+        <table>
+          <tr><th>Track</th><th>Placement Target</th><th>Category</th><th>Min Fee</th><th>Status</th><th>Supervisor</th><th>Next Step</th></tr>
+          <tr><td class="tg">PHX</td><td>Netflix Documentary</td><td>Sports / Culture</td><td>$1,500</td><td><span class="pill po">Under Review</span></td><td>Sports Doc Supervisor</td><td>Follow up July 1</td></tr>
+          <tr><td class="tg">Survive ft. Deck</td><td>ESPN Highlights</td><td>Sports / TV</td><td>$2,000</td><td><span class="pill pg">Negotiating</span></td><td>ESPN Licensing</td><td>Counter-offer sent</td></tr>
+          <tr><td class="tg">Hadouken RMX</td><td>Video Game OST</td><td>Gaming</td><td>$800</td><td><span class="pill pb">Interested</span></td><td>Indie Dev</td><td>Agreement pending</td></tr>
+          <tr><td class="tg">City Limits Beat</td><td>Apparel Ad</td><td>Commercial</td><td>$600</td><td><span class="pill pn">Licensed ✓</span></td><td>Brand Agency</td><td>$800 received</td></tr>
+          <tr><td class="tg">Phoenix Rising Beat</td><td>Local TV News</td><td>Broadcast</td><td>$300</td><td><span class="pill pn">Licensed ✓</span></td><td>KPNX Phoenix</td><td>$350 received</td></tr>
+          <tr><td class="tg">Against All Odds</td><td>Nike / Adidas Ad</td><td>Commercial</td><td>$5,000</td><td><span class="pill po">Outreach</span></td><td>—</td><td>Pitch being drafted</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="view" id="view-reports">
+      <div class="g2">
+        <div class="card">
+          <div class="ch"><h3>Monthly P&L Summary — June 2026</h3><button class="btn bg bsm" onclick="alert('Downloading PDF report...')">Download PDF</button></div>
+          <div class="cb">
+            <table>
+              <tr><th>Category</th><th>Amount</th></tr>
+              <tr><td style="font-weight:600">GROSS REVENUE</td><td class="tg" style="font-family:'Bebas Neue',sans-serif;font-size:16px">$14,969</td></tr>
+              <tr><td class="tm" style="padding-left:20px">Fan Subscriptions</td><td>$9,189</td></tr>
+              <tr><td class="tm" style="padding-left:20px">Merch Sales</td><td>$3,480</td></tr>
+              <tr><td class="tm" style="padding-left:20px">Sync / Licensing</td><td>$800</td></tr>
+              <tr><td class="tm" style="padding-left:20px">Beat Portal</td><td>$700</td></tr>
+              <tr><td class="tm" style="padding-left:20px">Fan Ownership + Other</td><td>$800</td></tr>
+              <tr><td style="padding-top:8px;font-weight:600">PLATFORM FEES (20% on applicable)</td><td style="color:var(--red)">-$2,122</td></tr>
+              <tr><td style="font-weight:600;border-top:1px solid var(--border);padding-top:8px">ARTIST NET REVENUE</td><td style="color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:18px;border-top:1px solid var(--border);padding-top:8px">$12,847</td></tr>
+              <tr><td style="font-weight:600">PROJECTED ANNUAL RUN RATE</td><td style="color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:18px">$154K</td></tr>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ch"><h3>1099 / Tax Tracking</h3></div>
+            <div class="cb">
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+                <div style="display:flex;justify-content:space-between"><span>Shoutout income (non-sub)</span><span class="tg">$170/mo</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Beat license income</span><span class="tg">$700/mo</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Sync licensing income</span><span class="tg">$1,370 YTD</span></div>
+                <div style="display:flex;justify-content:space-between"><span>DSP royalties</span><span class="tg">$1,840 YTD</span></div>
+                <div style="height:1px;background:var(--border);margin:4px 0"></div>
+                <div style="display:flex;justify-content:space-between;font-weight:600"><span>1099 Eligible YTD</span><span style="color:var(--gold)">$8,720</span></div>
+                <div style="padding:10px;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:4px;color:var(--orange);margin-top:4px">SE Tax set-aside (30% est.): $2,616</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ch"><h3>Annual Revenue Projection</h3></div>
+            <div class="cb"><div class="chart-wrap"><canvas id="proj-chart"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRESS KIT -->
+    <div class="view" id="view-press-kit">
+      <div style="max-width:680px">
+        <div style="background:linear-gradient(135deg,rgba(201,168,76,.08),transparent),var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;margin-bottom:20px">
+          <div style="font-size:9px;letter-spacing:4px;color:var(--gold);font-family:'Oswald',sans-serif;margin-bottom:8px">PRESS KIT GENERATOR</div>
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:6px">Auto-Generate Press Materials</h2>
+          <p style="font-size:12px;color:var(--muted);line-height:1.6">Select a package and generate a complete press kit instantly — artist bio, discography, streaming stats, co-signs, contact info, and high-res assets. Tailored for radio, blogs, labels, sync supervisors, and media.</p>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Generate Press Kit</h3></div>
+          <div class="cb">
+            <div class="fg"><label class="fl-label">Kit Type</label><select class="fi"><option>Full Label Press Kit (All info)</option><option>Radio / Podcast Pitch</option><option>Label / A&R Pitch</option><option>Sync Supervisor Brief</option><option>Blog / Magazine Feature</option><option>Tour / Booking Package</option></select></div>
+            <div class="fg"><label class="fl-label">Include Artist Bio</label><select class="fi"><option>Full Bio (Paragraph)</option><option>Short Bio (2 sentences)</option><option>Custom</option></select></div>
+            <div class="fr">
+              <div class="fg"><label class="fl-label">Focus Track</label><select class="fi"><option>PHX (2026)</option><option>Survive ft. Inspectah Deck</option><option>Against All Odds ft. Freeway</option><option>Hadouken RMX ft. Chris Webby</option><option>The Ayatollah Album</option></select></div>
+              <div class="fg"><label class="fl-label">Format</label><select class="fi"><option>PDF One-Pager</option><option>Full Packet (5 pages)</option><option>Email Template</option></select></div>
+            </div>
+            <div class="fg"><label class="fl-label">Custom Notes for Kit</label><textarea class="fi" rows="2" placeholder="Any specific angle or info to include..."></textarea></div>
+            <button class="btn bg" onclick="alert('Press kit generated! Murkemz — Full Label Press Kit includes:\n• Bio with Queens-born Phoenix-raised story\n• Co-signs: Ice-T, Inspectah Deck, Freeway, Chris Webby\n• Press: Hot 97, Sway\'s Universe, On the Radar, PHX New Times\n• Stats: 27K listeners, 2M IG views/mo, 541K streams (Hadouken RMX)\n• Discography + streaming links\n• Contact: Bryce Breeze (Manager)\n\nDownload ready as PDF.')">📰 Generate Press Kit</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><h3>Pre-Built Bio (Ready to Use)</h3><button class="btn bo bsm" onclick="alert('Bio copied to clipboard!')">Copy</button></div>
+          <div class="cb">
+            <p style="font-size:13px;line-height:1.8;color:var(--muted)">Queens-born and Phoenix-raised, <strong style="color:var(--text)">Murkemz</strong> is the CEO of Plug City Records and one of the most credentialed independent MCs in the Southwest. A purist in the vein of the legends who came before him, Murkemz seamlessly switches flows and tempos — described by Phoenix New Times as moving "like gears in an Italian exotic." His 2025 collaboration with <strong style="color:var(--text)">Inspectah Deck (Wu-Tang Clan)</strong> on "Survive" has surpassed 244,000 streams, while the <strong style="color:var(--text)">Hadouken RMX featuring Chris Webby</strong> stands at 541,000 streams — his biggest to date. 2026 opened with a <strong style="color:var(--text)">Freeway (Roc-A-Fella Records)</strong> collaboration and the breakout anthem <strong style="color:var(--text)">"PHX"</strong>, now trending nationally. Endorsed by <strong style="color:var(--text)">Ice-T</strong> at the Grammy Awards, featured on <strong style="color:var(--text)">Hot 97</strong> and <strong style="color:var(--text)">Sway's Universe</strong>, and named <strong style="color:var(--text)">Phoenix New Times Best Hip-Hop Artist 2025</strong> — Murkemz is building the independent label infrastructure for the next generation of artists, managed by <strong style="color:var(--text)">Bryce Breeze</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="g2">
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Platform Configuration</h3></div>
+            <div class="cb">
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">Murk Radio — Live Streaming</div><div style="font-size:11px;color:var(--muted)">Stream the full catalog to all members</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">Fan Subscriptions Active</div><div style="font-size:11px;color:var(--muted)">Accept new member signups</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">Beat Portal Open</div><div style="font-size:11px;color:var(--muted)">Other artists can license beats</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">AI Murk Chatbot</div><div style="font-size:11px;color:var(--muted)">Available to Murk Mode+ members</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">Artist Applications Open</div><div style="font-size:11px;color:var(--muted)">Accept new label applications</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">Shoutout Orders Open</div><div style="font-size:11px;color:var(--muted)">Fans can order custom videos</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500">Royalty Drops Active</div><div style="font-size:11px;color:var(--muted)">Fan ownership purchases open</div></div><label class="toggle"><input type="checkbox" checked/><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="ch"><h3>Integrations</h3></div>
+            <div class="cb">
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg3);border-radius:4px"><div style="display:flex;gap:8px;align-items:center"><span>🎵</span><div><div style="font-size:12px;font-weight:600">Spotify for Artists</div><div style="font-size:10px;color:var(--muted)">Stream data, listener analytics</div></div></div><span class="pill pn">Connected</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg3);border-radius:4px"><div style="display:flex;gap:8px;align-items:center"><span>🛒</span><div><div style="font-size:12px;font-weight:600">Shopify (murkmerch.com)</div><div style="font-size:10px;color:var(--muted)">Merch orders, inventory sync</div></div></div><span class="pill pn">Connected</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg3);border-radius:4px"><div style="display:flex;gap:8px;align-items:center"><span>💳</span><div><div style="font-size:12px;font-weight:600">Stripe (Payments)</div><div style="font-size:10px;color:var(--muted)">Subscriptions, one-time payments</div></div></div><span class="pill pn">Connected</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg3);border-radius:4px"><div style="display:flex;gap:8px;align-items:center"><span>📧</span><div><div style="font-size:12px;font-weight:600">Email Platform (Klaviyo)</div><div style="font-size:10px;color:var(--muted)">Fan newsletters, automation</div></div></div><span class="pill po">Configure</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg3);border-radius:4px"><div style="display:flex;gap:8px;align-items:center"><span>🍎</span><div><div style="font-size:12px;font-weight:600">Apple / Google Wallet Pass</div><div style="font-size:10px;color:var(--muted)">Fan pass digital cards</div></div></div><span class="pill pn">Active</span></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg3);border-radius:4px"><div style="display:flex;gap:8px;align-items:center"><span>🤖</span><div><div style="font-size:12px;font-weight:600">AI Murk Engine</div><div style="font-size:10px;color:var(--muted)">Trained on lyrics, interviews</div></div></div><span class="pill pn">Running</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PUSH VIEW -->
+    <div class="view" id="view-push">
+      <div style="max-width:560px">
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:8px">Push Notifications</h2>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6">Wallet passes deliver to the fan's lock screen — 90% open rate. Use this for new drops, show presales, and merch launches.</p>
+        <div class="card">
+          <div class="ch"><h3>Send Wallet Push</h3></div>
+          <div class="cb">
+            <div class="fg"><label class="fl-label">Message (Max 100 chars)</label><input class="fi" type="text" id="push-msg" placeholder="PHX is LIVE — stream it NOW 🔥" maxlength="100"/><div style="font-size:10px;color:var(--muted);margin-top:4px">Wallet passes show on lock screen — be direct and create urgency</div></div>
+            <div class="fg"><label class="fl-label">Target Audience</label><select class="fi"><option>All Members (847 fans)</option><option>Murk Mode + Ayatollah (535 fans)</option><option>Ayatollah Only (117 fans)</option><option>Street Pass Only (312 fans)</option></select></div>
+            <div class="fg"><label class="fl-label">Action Link</label><input class="fi" type="url" placeholder="https://plugcityrecords.com/app.html"/></div>
+            <button class="btn bg" onclick="alert('Push sent to 847 wallet pass holders! Estimated 762 opens in next 10 minutes.')">📲 Send Now to 847 Fans</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTRACTS VIEW -->
+    <div class="view" id="view-contracts">
+      <div class="card">
+        <div class="ch"><h3>Contracts &amp; Agreements</h3><button class="btn bg bsm" onclick="alert('Opening e-signature contract builder...')">+ New Contract</button></div>
+        <table>
+          <tr><th>Document</th><th>Party</th><th>Type</th><th>Date</th><th>Status</th><th>Action</th></tr>
+          <tr><td class="tg">Plug City Platform License — Murkemz</td><td>Murkemz / Plug City</td><td>Platform License</td><td>Jan 2026</td><td><span class="pill pn">Signed ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+          <tr><td>Survive — Feature Agreement</td><td>Inspectah Deck</td><td>Feature Deal</td><td>2025</td><td><span class="pill pn">Signed ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+          <tr><td>Against All Odds — Feature Agreement</td><td>Freeway</td><td>Feature Deal</td><td>Jan 2026</td><td><span class="pill pn">Signed ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+          <tr><td>City Limits Beat — Sync License</td><td>Apparel Brand</td><td>Sync License</td><td>2025</td><td><span class="pill pn">Signed ✓</span></td><td><button class="btn bo bsm">View</button></td></tr>
+          <tr><td>ESPN Highlights — Survive</td><td>ESPN Licensing</td><td>Sync License</td><td>Jun 2026</td><td><span class="pill po">In Negotiation</span></td><td><button class="btn bg bsm">Review</button></td></tr>
+          <tr><td>BadBlood_AZ — Platform License</td><td>BadBlood_AZ</td><td>Platform License</td><td>—</td><td><span class="pill pb">Draft</span></td><td><button class="btn bg bsm">Send for Signature</button></td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- .content -->
+</div><!-- .main -->
+
+<!-- MODALS -->
+<div class="modal-overlay" id="push-modal" onclick="if(event.target===this)closeModal('push-modal')">
+  <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:90%;max-width:460px;padding:24px;position:relative">
+    <button style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer" onclick="closeModal('push-modal')">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;margin-bottom:6px;color:var(--gold)">Wallet Push</div>
+    <div class="fg" style="margin-top:12px"><label class="fl-label">Message</label><input class="fi" type="text" placeholder="PHX is LIVE — stream it NOW 🔥" maxlength="100"/></div>
+    <div class="fg"><label class="fl-label">Send To</label><select class="fi"><option>All Members (847)</option><option>Murk Mode+ (535)</option><option>Ayatollah (117)</option></select></div>
+    <button class="btn bg" style="width:100%;justify-content:center;margin-top:8px" onclick="alert('Push notification sent to 847 wallet pass holders!');closeModal('push-modal')">📲 Send Now</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="email-modal" onclick="if(event.target===this)closeModal('email-modal')">
+  <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:90%;max-width:520px;padding:24px;position:relative;max-height:80vh;overflow-y:auto">
+    <button style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer" onclick="closeModal('email-modal')">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;margin-bottom:6px;color:var(--gold)">Email Campaign</div>
+    <div class="fg" style="margin-top:12px"><label class="fl-label">Subject Line</label><input class="fi" type="text" placeholder="PHX is OUT — Your exclusive 48hr early access 🔥"/></div>
+    <div class="fg"><label class="fl-label">Send To</label><select class="fi"><option>All Members (847)</option><option>Murk Mode+ (535)</option><option>Ayatollah (117)</option><option>Street Pass (312)</option></select></div>
+    <div class="fg"><label class="fl-label">Message</label><textarea class="fi" rows="5" placeholder="What's good [first_name], PHX just dropped exclusively on Murk Radio..."></textarea></div>
+    <div class="fr">
+      <div class="fg"><label class="fl-label">Send Time</label><select class="fi"><option>Now</option><option>Schedule</option></select></div>
+      <div class="fg"><label class="fl-label">Date / Time</label><input class="fi" type="datetime-local"/></div>
+    </div>
+    <button class="btn bg" style="width:100%;justify-content:center" onclick="alert('Email campaign queued! 847 fans will receive this in the next 15 minutes. Estimated open rate: 38-44%.');closeModal('email-modal')">📧 Send Campaign</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="release-modal" onclick="if(event.target===this)closeModal('release-modal')">
+  <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:90%;max-width:480px;padding:24px;position:relative">
+    <button style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer" onclick="closeModal('release-modal')">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;margin-bottom:6px;color:var(--gold)">Schedule Drop</div>
+    <div class="fg" style="margin-top:12px"><label class="fl-label">Title</label><input class="fi" type="text" placeholder="Track / Album / Event title"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl-label">Type</label><select class="fi"><option>Single</option><option>EP</option><option>Album</option><option>Merch Drop</option><option>Show / Event</option></select></div>
+      <div class="fg"><label class="fl-label">Release Date</label><input class="fi" type="date"/></div>
+    </div>
+    <div class="fg"><label class="fl-label">Exclusivity</label><select class="fi"><option>48hr Murk Mode+ early access</option><option>72hr Ayatollah only</option><option>Public immediately</option></select></div>
+    <div class="fg"><label class="fl-label">Notes</label><textarea class="fi" rows="2" placeholder="Any notes for release..."></textarea></div>
+    <button class="btn bg" style="width:100%;justify-content:center" onclick="alert('Drop scheduled! Wallet push will auto-send 1hr before release. Email campaign will queue 24hrs before.');closeModal('release-modal')">🗓️ Schedule Drop</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="artist-modal" onclick="if(event.target===this)closeModal('artist-modal')">
+  <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:8px;width:90%;max-width:480px;padding:24px;position:relative">
+    <button style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer" onclick="closeModal('artist-modal')">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;margin-bottom:6px;color:var(--gold)">Add Artist to Roster</div>
+    <div class="fg" style="margin-top:12px"><label class="fl-label">Artist Name</label><input class="fi" type="text" placeholder="Stage name"/></div>
+    <div class="fg"><label class="fl-label">Deal Type</label><select class="fi"><option>Platform License (80/20)</option><option>Distribution Deal (90/10)</option><option>Full Label Deal (75/25)</option></select></div>
+    <div class="fg"><label class="fl-label">Genre</label><input class="fi" type="text" placeholder="Genre(s)"/></div>
+    <div class="fg"><label class="fl-label">Spotify Profile Link</label><input class="fi" type="url" placeholder="https://open.spotify.com/artist/..."/></div>
+    <button class="btn bg" style="width:100%;justify-content:center" onclick="alert('Artist added to roster. Onboarding checklist triggered: ID verification, W-9, payment setup, contract e-sign.');closeModal('artist-modal')">+ Add to Roster</button>
+  </div>
+</div>
+
+<script>
+// VIEW SWITCHING
+const TITLES={'command':'COMMAND CENTER','revenue':'REVENUE OS','social':'SOCIAL ANALYTICS','release':'RELEASE MANAGER','roster':'ARTIST ROSTER','fans-db':'FAN DATABASE','contracts':'CONTRACTS','anr':'A&R PIPELINE','campaigns':'CAMPAIGNS','push':'PUSH / WALLET','press-kit':'PRESS KIT GENERATOR','royalties':'ROYALTIES','sync-track':'SYNC LICENSING','reports':'REPORTS','settings':'SETTINGS'};
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));const v=document.getElementById('view-'+id);if(v)v.classList.add('active');const t=document.getElementById('tb-title');if(t)t.textContent=TITLES[id]||id.toUpperCase();document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'))}
+function showModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'))});
+
+// LIVE COUNTERS
+setInterval(()=>{const f=document.getElementById('live-fans');const s=document.getElementById('live-streams');const r=document.getElementById('live-rev');if(f){const n=parseInt(f.textContent.replace(',',''));f.textContent=(n+Math.floor(Math.random()*3-1)).toLocaleString()}if(s){const n=parseInt(s.textContent.replace(',',''));s.textContent=(n+Math.floor(Math.random()*5)).toLocaleString()}if(r){const curr=parseFloat(r.textContent.replace('$','').replace(',',''));r.textContent='$'+(curr+Math.random()*.8).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',')}},4000);
+
+// CHARTS
+window.addEventListener('load',()=>{
+  // Command revenue chart
+  const crc=document.getElementById('cmd-rev-chart');
+  if(crc)new Chart(crc,{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Revenue',data:[2100,3400,5800,7200,9800,14887],backgroundColor:'rgba(201,168,76,.7)',borderRadius:3},{label:'MRR',data:[1200,2100,3600,5200,7400,9189],backgroundColor:'rgba(34,197,94,.4)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#777',font:{size:10}}}},scales:{x:{grid:{display:false},ticks:{color:'#555'}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#555',callback:v=>'$'+v.toLocaleString()}}}}});
+
+  // Command mix doughnut
+  const cmd=document.getElementById('cmd-mix');
+  if(cmd)new Chart(cmd,{type:'doughnut',data:{labels:['Subs','Merch','Beats','Sync','Other'],datasets:[{data:[9189,3480,700,800,718],backgroundColor:['#C9A84C','#3b82f6','#22c55e','#f97316','#a855f7'],borderWidth:0}]},options:{cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' $'+ctx.parsed.toLocaleString()}}}}});
+
+  // Sub growth
+  const sg=document.getElementById('sub-growth');
+  if(sg)new Chart(sg,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Street',data:[120,180,220,250,290,312],borderColor:'#3b82f6',fill:false,tension:.4},{label:'Murk Mode',data:[80,140,220,310,370,418],borderColor:'#C9A84C',fill:false,tension:.4},{label:'Ayatollah',data:[20,40,60,80,100,117],borderColor:'#f97316',fill:false,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#666',font:{size:10}}}},scales:{x:{grid:{display:false},ticks:{color:'#555'}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#555'}}}}});
+
+  // Rev all time
+  const ra=document.getElementById('rev-all');
+  if(ra)new Chart(ra,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Total Revenue',data:[2100,3400,5800,7200,9800,14887],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',fill:true,tension:.4,pointBackgroundColor:'#22c55e'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#555'}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#555',callback:v=>'$'+v.toLocaleString()}}}}});
+
+  // Spotify
+  const sp=document.getElementById('spotify-chart');
+  if(sp)new Chart(sp,{type:'bar',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Monthly Listeners',data:[18000,21000,22500,24100,25800,27256],backgroundColor:'rgba(29,185,84,.6)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#555'}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#555',callback:v=>v>=1000?Math.round(v/1000)+'K':v}}}}});
+
+  // Projection
+  const pr=document.getElementById('proj-chart');
+  if(pr)new Chart(pr,{type:'line',data:{labels:['Jun','Jul','Aug','Sep','Oct','Nov','Dec'],datasets:[{label:'Conservative',data:[14887,16000,17500,19000,21000,23000,26000],borderColor:'#C9A84C',fill:false,tension:.4,borderDash:[4,4]},{label:'Optimistic',data:[14887,18000,22000,27000,33000,40000,50000],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.04)',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#666',font:{size:10}}}},scales:{x:{grid:{display:false},ticks:{color:'#555'}},y:{grid:{color:'rgba(255,255,255,.03)'},ticks:{color:'#555',callback:v=>'$'+v.toLocaleString()}}}}});
+});
+</script>
+<script src="shared.js"></script>
+<script src="tour.js"></script>
+</body>
+</html>

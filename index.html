@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="description" content="Plug City Records — The independent label platform built for the new music economy. Stream, support, and own a piece of the movement."/>
+<title>PLUG CITY RECORDS — Official Platform</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9A84C;--gold-l:#E8C97A;--gold-d:#9A7A30;--gold-xd:#5A4720;
+  --red:#8B1A1A;--orange:#D4500A;
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#1a1a1a;--bg4:#222;--bg5:#2a2a2a;
+  --text:#F0F0F0;--muted:#888;--muted2:#555;
+  --border:rgba(201,168,76,.15);--border2:rgba(201,168,76,.3);
+  --radius:4px;--transition:.25s ease;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;cursor:none}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:2px}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s,opacity .15s}
+#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(201,168,76,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .08s ease}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s,visibility .8s}
+#loader.gone{opacity:0;visibility:hidden}
+.loader-logo{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,10vw,96px);letter-spacing:12px;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:loader-pulse 1.5s ease-in-out infinite}
+.loader-sub{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:8px;color:var(--muted);margin-top:12px;text-transform:uppercase}
+.loader-bar{width:200px;height:2px;background:var(--bg3);margin-top:32px;border-radius:1px;overflow:hidden}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:1px;width:0;animation:loader-grow 2s ease forwards}
+@keyframes loader-pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes loader-grow{0%{width:0}100%{width:100%}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(8,8,8,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#000;letter-spacing:1px}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1}
+.nav-logo-text span:first-child{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-logo-text span:last-child{font-size:9px;letter-spacing:4px;color:var(--muted);text-transform:uppercase;font-family:'Oswald',sans-serif}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color var(--transition)}
+.nav-links a:hover{color:var(--gold)}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:10px 22px;border-radius:var(--radius);text-decoration:none;transition:all var(--transition);cursor:pointer;border:none}
+.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000}
+.btn-gold:hover{opacity:.85;transform:translateY(-1px);box-shadow:0 6px 24px rgba(201,168,76,.3)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.2)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:8px 16px;font-size:11px}
+
+/* ── HERO ── */
+#hero{position:relative;height:100vh;min-height:700px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+#hero-canvas{position:absolute;inset:0;z-index:0}
+.hero-bg-img{position:absolute;right:0;top:0;bottom:0;width:60%;z-index:1;background:url('https://murkmerch.com/cdn/shop/files/IMG-8437.jpg?v=1763879859') center/cover no-repeat;filter:saturate(.5) contrast(1.1)}
+.hero-bg-img::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 20%,rgba(8,8,8,.4) 60%,transparent 100%)}
+.hero-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--bg) 100%)}
+.hero-content{position:relative;z-index:2;padding:0 60px 60px;max-width:700px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border2);background:rgba(201,168,76,.07);padding:6px 14px;border-radius:2px;margin-bottom:20px}
+.hero-eyebrow .dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hero-eyebrow span{font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,13vw,160px);line-height:.88;letter-spacing:2px;margin-bottom:4px}
+.hero-title .line1{display:block;background:linear-gradient(160deg,#fff 0%,rgba(255,255,255,.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-tagline{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:6px;color:var(--muted);text-transform:uppercase;margin-bottom:28px}
+.hero-desc{font-size:15px;line-height:1.7;color:rgba(240,240,240,.7);max-width:480px;margin-bottom:36px}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px}
+.hero-social{display:flex;gap:14px;align-items:center}
+.hero-social-label{font-size:11px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif}
+.hero-social a{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);color:var(--muted);text-decoration:none;transition:all var(--transition);font-size:14px}
+.hero-social a:hover{border-color:var(--gold);color:var(--gold)}
+.hero-scroll{position:absolute;bottom:32px;right:48px;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px}
+.hero-scroll span{font-size:10px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif;writing-mode:vertical-rl}
+.hero-scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);animation:scroll-line 2s ease-in-out infinite}
+@keyframes scroll-line{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ── MARQUEE ── */
+.marquee-strip{background:var(--gold);padding:10px 0;overflow:hidden;white-space:nowrap}
+.marquee-inner{display:inline-flex;animation:marquee 25s linear infinite}
+.marquee-inner span{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:3px;color:#000;padding:0 28px}
+.marquee-inner span.sep{opacity:.4}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── SECTIONS ── */
+section{padding:100px 60px}
+.section-tag{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.section-tag::before{content:'';flex:0 0 30px;height:1px;background:var(--gold)}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);letter-spacing:2px;line-height:1;margin-bottom:16px}
+.section-desc{font-size:15px;color:var(--muted);line-height:1.7;max-width:560px;margin-bottom:56px}
+
+/* ── BREAKING / PHX ── */
+#phx{background:var(--bg2);padding:60px}
+.phx-inner{display:grid;grid-template-columns:auto 1fr auto;gap:40px;align-items:center;border:1px solid var(--border2);border-radius:var(--radius);padding:40px;background:linear-gradient(135deg,rgba(201,168,76,.06),rgba(8,8,8,0))}
+.phx-badge{display:flex;flex-direction:column;align-items:center;gap:4px}
+.phx-badge-text{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:4px;color:var(--gold)}
+.phx-badge-fire{font-size:40px;animation:fire 1.5s ease-in-out infinite alternate}
+@keyframes fire{0%{transform:scale(1) rotate(-3deg)}100%{transform:scale(1.1) rotate(3deg)}}
+.phx-info h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);letter-spacing:2px;line-height:1;margin-bottom:8px}
+.phx-info h2 em{color:var(--gold);font-style:normal}
+.phx-info p{font-size:14px;color:var(--muted);line-height:1.6;max-width:500px;margin-bottom:16px}
+.phx-tags{display:flex;gap:8px;flex-wrap:wrap}
+.phx-tag{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:2px;padding:4px 10px;border:1px solid var(--border);border-radius:2px;color:var(--muted)}
+.phx-streams{text-align:right}
+.phx-streams-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gold);letter-spacing:2px;line-height:1}
+.phx-streams-label{font-size:11px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif}
+.phx-stream-links{display:flex;gap:10px;margin-top:16px;justify-content:flex-end}
+.stream-link{display:inline-flex;align-items:center;gap:6px;font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:2px;transition:all var(--transition)}
+.stream-link:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:60px 0}
+.stat{padding:36px 24px;text-align:center;border-right:1px solid var(--border);background:var(--bg2)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,4vw,52px);color:var(--gold);letter-spacing:2px;line-height:1}
+.stat-label{font-size:11px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif;margin-top:6px;text-transform:uppercase}
+
+/* ── DISCOGRAPHY ── */
+#music{background:var(--bg2)}
+.releases-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px}
+.release-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all var(--transition);text-decoration:none;color:inherit}
+.release-card:hover{transform:translateY(-4px);border-color:var(--gold-d);box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.release-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;filter:saturate(.7)}
+.release-img-placeholder{width:100%;aspect-ratio:1;background:linear-gradient(135deg,var(--bg4),var(--bg5));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold-d);letter-spacing:2px;text-align:center;padding:16px}
+.release-body{padding:16px}
+.release-tag{font-size:10px;letter-spacing:3px;color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;margin-bottom:6px}
+.release-name{font-family:'Oswald',sans-serif;font-size:16px;font-weight:500;margin-bottom:4px;line-height:1.2}
+.release-meta{font-size:12px;color:var(--muted)}
+.release-streams{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold-d);margin-top:8px}
+.spotify-embed-wrap{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.spotify-embed-wrap iframe{display:block;width:100%;border:none}
+
+/* ── PLATFORM PITCH ── */
+#platform{background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.05) 0%,transparent 70%),var(--bg)}
+.platform-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.platform-visual{position:relative}
+.platform-screen{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px;position:relative;overflow:hidden}
+.platform-screen-bar{height:32px;background:var(--bg3);border-radius:4px;margin-bottom:16px;display:flex;align-items:center;gap:8px;padding:0 12px}
+.win-btn{width:10px;height:10px;border-radius:50%}
+.platform-screen-content{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini-card{background:var(--bg3);border-radius:4px;padding:12px;border:1px solid var(--border)}
+.mini-card-num{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold);letter-spacing:1px}
+.mini-card-label{font-size:10px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif}
+.mini-bar-row{margin-top:12px}
+.mini-bar-label{font-size:10px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:4px}
+.mini-bar{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.mini-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:2px}
+.platform-features{display:flex;flex-direction:column;gap:20px}
+.pf-item{display:flex;gap:16px;align-items:flex-start}
+.pf-icon{width:40px;height:40px;flex-shrink:0;border-radius:var(--radius);background:rgba(201,168,76,.1);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:18px}
+.pf-text h4{font-family:'Oswald',sans-serif;font-size:16px;font-weight:500;margin-bottom:4px}
+.pf-text p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ── PLANS ── */
+#plans{background:var(--bg2)}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1000px;margin:0 auto}
+.plan{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:36px 28px;display:flex;flex-direction:column;position:relative;transition:all var(--transition)}
+.plan:hover{border-color:var(--border2);transform:translateY(-4px)}
+.plan.featured{border-color:var(--gold);background:linear-gradient(170deg,rgba(201,168,76,.1),var(--bg3) 60%);transform:translateY(-8px)}
+.plan.featured:hover{transform:translateY(-12px)}
+.plan-hot{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000;font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;padding:4px 14px;border-radius:2px;white-space:nowrap;text-transform:uppercase}
+.plan-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;margin-bottom:4px}
+.plan-name.gold{color:var(--gold)}
+.plan-name.silver{color:#B0B0B0}
+.plan-name.plat{background:linear-gradient(135deg,#fff,var(--gold-l));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:8px}
+.plan-price-big{font-family:'Bebas Neue',sans-serif;font-size:52px;line-height:1;color:var(--text)}
+.plan-price-per{font-size:13px;color:var(--muted)}
+.plan-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.plan-features-list{flex:1;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.plan-feature{display:flex;gap:10px;font-size:13px;color:var(--muted);line-height:1.5;align-items:flex-start}
+.plan-feature.on{color:var(--text)}
+.check{width:16px;height:16px;flex-shrink:0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px;font-size:9px}
+.check.yes{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);color:var(--gold)}
+.check.no{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--muted2)}
+.plan-btn{display:block;text-align:center;padding:14px;border-radius:var(--radius);font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all var(--transition);cursor:pointer;border:none}
+.plan-btn.outline-gold{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.plan-btn.outline-gold:hover{background:rgba(201,168,76,.1)}
+.plan-btn.filled-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000}
+.plan-btn.filled-gold:hover{opacity:.88;transform:translateY(-1px)}
+
+/* ── RADIO ── */
+#radio{background:var(--bg)}
+.radio-hero{display:flex;gap:60px;align-items:center;border:1px solid var(--border);border-radius:var(--radius);padding:48px;background:linear-gradient(135deg,rgba(201,168,76,.04),transparent);margin-bottom:40px}
+.radio-vinyl{width:140px;height:140px;border-radius:50%;background:conic-gradient(from 0deg,#111,#333,#111,#222,#111);border:4px solid var(--bg3);flex-shrink:0;position:relative;animation:spin 8s linear infinite paused}
+.radio-vinyl.playing{animation-play-state:running}
+.radio-vinyl::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:var(--bg);border-radius:50%;border:2px solid var(--bg4)}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.radio-info h2{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;color:var(--gold);line-height:1;margin-bottom:8px}
+.radio-info p{font-size:14px;color:var(--muted);line-height:1.7;max-width:500px;margin-bottom:20px}
+.radio-now{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.radio-now-label{font-size:10px;letter-spacing:3px;color:var(--gold);font-family:'Oswald',sans-serif}
+.radio-now-track{font-family:'Oswald',sans-serif;font-size:16px;font-weight:500}
+.radio-waveform{display:flex;align-items:center;gap:3px;height:32px}
+.wave-bar{width:3px;background:var(--gold);border-radius:1px;animation:wave-anim 1.2s ease-in-out infinite}
+@keyframes wave-anim{0%,100%{height:6px;opacity:.4}50%{height:28px;opacity:1}}
+.play-btn{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold-l),var(--gold));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#000;font-size:20px;transition:all var(--transition);flex-shrink:0}
+.play-btn:hover{transform:scale(1.08);box-shadow:0 8px 32px rgba(201,168,76,.4)}
+
+/* ── ARTISTS ON PLATFORM ── */
+#artists{background:var(--bg2)}
+.artists-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:40px}
+.artist-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all var(--transition);text-decoration:none;color:inherit;position:relative}
+.artist-card:hover{transform:translateY(-4px);border-color:var(--border2);box-shadow:0 16px 48px rgba(0,0,0,.5)}
+.artist-img-wrap{aspect-ratio:1;overflow:hidden;background:var(--bg4)}
+.artist-img-wrap img{width:100%;height:100%;object-fit:cover;filter:saturate(.6);transition:transform .4s,filter .4s}
+.artist-card:hover .artist-img-wrap img{transform:scale(1.06);filter:saturate(.9)}
+.artist-badge{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000;font-family:'Oswald',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:2px}
+.artist-body{padding:16px}
+.artist-name{font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;margin-bottom:4px}
+.artist-genre{font-size:11px;color:var(--muted);letter-spacing:2px;font-family:'Oswald',sans-serif;text-transform:uppercase}
+.artist-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.artist-stat{font-size:11px;color:var(--muted)}
+.artist-stat strong{color:var(--gold);font-family:'Oswald',sans-serif;font-size:13px;display:block}
+.artist-join{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:48px;text-align:center;border-style:dashed}
+.artist-join h3{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:3px;margin-bottom:12px}
+.artist-join p{font-size:14px;color:var(--muted);max-width:400px;margin:0 auto 24px}
+
+/* ── STORE ── */
+#store{background:var(--bg)}
+.store-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all var(--transition)}
+.product-card:hover{transform:translateY(-4px);border-color:var(--border2)}
+.product-img-wrap{position:relative;aspect-ratio:1;overflow:hidden;background:var(--bg3)}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.product-card:hover .product-img-wrap img{transform:scale(1.06)}
+.product-label{position:absolute;top:10px;left:10px;font-family:'Oswald',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;padding:3px 8px;border-radius:2px}
+.product-label.sale{background:var(--orange);color:#fff}
+.product-label.new{background:var(--gold);color:#000}
+.product-hover{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity var(--transition)}
+.product-card:hover .product-hover{opacity:1}
+.product-body{padding:16px 20px}
+.product-cat{font-size:10px;letter-spacing:3px;color:var(--gold);font-family:'Oswald',sans-serif;text-transform:uppercase;margin-bottom:6px}
+.product-name{font-family:'Oswald',sans-serif;font-size:16px;font-weight:500;margin-bottom:10px;line-height:1.3}
+.product-price{display:flex;align-items:center;gap:10px}
+.product-price-current{font-family:'Oswald',sans-serif;font-size:20px;color:var(--gold)}
+.product-price-orig{font-size:13px;color:var(--muted);text-decoration:line-through}
+
+/* ── COLLABS / PRESS ── */
+#press{background:var(--bg2)}
+.collab-strip{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+.collab-pill{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:2px;padding:8px 16px;border:1px solid var(--border);border-radius:2px;color:var(--muted);transition:all var(--transition)}
+.collab-pill:hover{border-color:var(--gold);color:var(--gold)}
+.press-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.press-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all var(--transition)}
+.press-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.press-source{font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--gold);margin-bottom:12px}
+.press-quote{font-size:14px;line-height:1.7;color:var(--muted);font-style:italic}
+.press-quote em{color:var(--text);font-style:normal;font-weight:600}
+
+/* ── ABOUT LABEL ── */
+#label{background:var(--bg)}
+.label-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.label-img{position:relative}
+.label-img-inner{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius);filter:saturate(.6)}
+.label-img::after{content:'PLUG CITY\ARECORDS';white-space:pre;position:absolute;bottom:-20px;right:-20px;background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#000;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;padding:16px 20px;border-radius:var(--radius);line-height:1.4}
+.label-content {}
+.label-quote{font-family:'Oswald',sans-serif;font-size:22px;font-weight:400;line-height:1.5;color:var(--gold);border-left:3px solid var(--gold);padding-left:20px;margin-bottom:28px}
+.label-body{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:16px}
+.label-team{display:flex;gap:20px;margin-top:32px}
+.team-member{display:flex;align-items:center;gap:12px}
+.team-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--bg3),var(--bg4));border:2px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold)}
+.team-info .name{font-family:'Oswald',sans-serif;font-size:15px;font-weight:500}
+.team-info .role{font-size:11px;color:var(--muted);letter-spacing:2px}
+
+/* ── REVENUE CALC ── */
+#calculator{background:var(--bg2);padding:80px 60px}
+.calc-inner{max-width:800px;margin:0 auto;text-align:center}
+.calc-slider-wrap{margin:40px 0}
+.calc-label{font-family:'Oswald',sans-serif;font-size:14px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:16px}
+input[type=range]{width:100%;appearance:none;height:3px;background:var(--bg4);border-radius:2px;outline:none;margin-bottom:8px}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:20px;height:20px;background:var(--gold);border-radius:50%;cursor:pointer;border:2px solid var(--bg)}
+.calc-value{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--gold);letter-spacing:2px;line-height:1}
+.calc-subtitle{font-size:14px;color:var(--muted);margin-bottom:32px}
+.calc-breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left}
+.calc-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.calc-item-label{font-size:11px;letter-spacing:3px;color:var(--muted);font-family:'Oswald',sans-serif;margin-bottom:8px}
+.calc-item-value{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--text);letter-spacing:1px}
+
+/* ── APP CTA ── */
+#app-cta{background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,.08) 0%,transparent 70%),var(--bg);padding:100px 60px;text-align:center}
+.app-cta-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);letter-spacing:4px;line-height:.9;margin-bottom:20px}
+.app-cta-title span{color:var(--gold)}
+.app-cta-desc{font-size:16px;color:var(--muted);max-width:560px;margin:0 auto 40px;line-height:1.7}
+.app-install-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.app-install-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border:1px solid var(--border2);border-radius:var(--radius);text-decoration:none;color:var(--text);transition:all var(--transition);background:var(--bg2)}
+.app-install-btn:hover{border-color:var(--gold);background:rgba(201,168,76,.07)}
+.app-install-icon{font-size:24px}
+.app-install-text small{display:block;font-size:10px;letter-spacing:2px;color:var(--muted);font-family:'Oswald',sans-serif}
+.app-install-text strong{font-family:'Oswald',sans-serif;font-size:15px;font-weight:500}
+.pwa-note{font-size:12px;color:var(--muted2);letter-spacing:1px}
+
+/* ── NEWSLETTER ── */
+#newsletter{background:var(--bg2);padding:80px 60px;text-align:center}
+.nl-form{display:flex;gap:12px;max-width:480px;margin:32px auto 0}
+.nl-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:14px 18px;border-radius:var(--radius);outline:none;transition:border-color var(--transition)}
+.nl-input::placeholder{color:var(--muted2)}
+.nl-input:focus{border-color:var(--gold)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:48px 60px}
+.footer-main{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
+.footer-brand h3{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;max-width:240px}
+.footer-col h4{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:3px;color:var(--text);text-transform:uppercase;margin-bottom:16px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color var(--transition)}
+.footer-links a:hover{color:var(--gold)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid var(--border)}
+.footer-copy{font-size:12px;color:var(--muted2)}
+.footer-socials{display:flex;gap:12px}
+.footer-social{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);color:var(--muted);text-decoration:none;font-size:12px;transition:all var(--transition)}
+.footer-social:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ── FADE IN ── */
+.fi{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fi.vis{opacity:1;transform:translateY(0)}
+.fi-d1{transition-delay:.1s}.fi-d2{transition-delay:.2s}.fi-d3{transition-delay:.3s}.fi-d4{transition-delay:.4s}
+
+/* ── FLOATING PLAYER ── */
+#player{position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(15,15,15,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:10px 40px;display:flex;align-items:center;gap:24px;transform:translateY(100%);transition:transform .4s cubic-bezier(.16,1,.3,1)}
+#player.up{transform:translateY(0)}
+.player-thumb{width:44px;height:44px;border-radius:4px;object-fit:cover;flex-shrink:0;background:var(--bg3)}
+.player-track{flex:1}
+.player-track h4{font-family:'Oswald',sans-serif;font-size:14px;font-weight:500}
+.player-track p{font-size:11px;color:var(--muted);letter-spacing:1px}
+.player-ctrl{display:flex;gap:14px;align-items:center}
+.pctrl{background:none;border:none;color:var(--muted);cursor:pointer;display:flex;transition:color var(--transition)}
+.pctrl:hover{color:var(--gold)}
+.pctrl-play{width:40px;height:40px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#000;transition:all var(--transition)}
+.pctrl-play:hover{opacity:.85;transform:scale(1.06)}
+.player-prog{flex:2;display:flex;align-items:center;gap:12px}
+.prog-track{flex:1;height:3px;background:var(--bg4);border-radius:2px;cursor:pointer;position:relative}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:2px;width:40%}
+.prog-time{font-size:11px;color:var(--muted);white-space:nowrap}
+.player-badge{font-family:'Oswald',sans-serif;font-size:9px;letter-spacing:2px;background:var(--gold);color:#000;padding:3px 8px;border-radius:2px}
+.player-close{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;transition:color var(--transition)}
+.player-close:hover{color:var(--text)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav{padding:0 20px}
+  .nav-links,.nav-actions .btn-outline{display:none}
+  section{padding:70px 24px}
+  .platform-grid,.label-grid,.about-grid{grid-template-columns:1fr}
+  .plans-grid{grid-template-columns:1fr;max-width:400px}
+  .plan.featured{transform:none}
+  .releases-grid{grid-template-columns:repeat(2,1fr)}
+  .artists-grid{grid-template-columns:repeat(2,1fr)}
+  .store-grid{grid-template-columns:1fr 1fr}
+  .press-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-main{grid-template-columns:1fr 1fr}
+  .hero-content{padding:0 24px 60px}
+  #phx{padding:30px 24px}
+  .phx-inner{grid-template-columns:1fr;gap:20px;text-align:center}
+  .phx-streams{text-align:center}
+  .phx-stream-links{justify-content:center}
+  .calc-breakdown{grid-template-columns:1fr}
+  #player{padding:10px 16px;gap:12px}
+}
+</style>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">PLUG CITY</div>
+  <div class="loader-sub">Records &amp; Platform</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">PC</div>
+    <div class="nav-logo-text">
+      <span>Plug City</span>
+      <span>Records &amp; Platform</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#music">Music</a></li>
+    <li><a href="#plans">Murk Pass</a></li>
+    <li><a href="#store">Store</a></li>
+    <li><a href="#artists">Artists</a></li>
+    <li><a href="#label">Label</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a href="app.html" class="btn btn-outline btn-sm">Sign In</a>
+    <a href="app.html" class="btn btn-gold btn-sm">Join Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-bg-img"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><div class="dot"></div><span>PHX — Out Now — Streaming Everywhere</span></div>
+    <h1 class="hero-title">
+      <span class="line1">PLUG</span>
+      <span class="line2">CITY</span>
+    </h1>
+    <div class="hero-tagline">Records &bull; Platform &bull; Movement</div>
+    <p class="hero-desc">The independent label ecosystem built for the new music economy. Stream, support, and own a piece of the movement — powered by Murkemz and Plug City Records out of Phoenix, AZ.</p>
+    <div class="hero-ctas">
+      <a href="app.html" class="btn btn-gold">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Stream Free
+      </a>
+      <a href="#plans" class="btn btn-outline">Get Murk Pass</a>
+    </div>
+    <div class="hero-social">
+      <span class="hero-social-label">Follow</span>
+      <a href="https://www.instagram.com/murkemz/" target="_blank" title="Instagram">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@murktheayatollah" target="_blank" title="TikTok">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.77a4.85 4.85 0 0 1-1.01-.08z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@murkemz2001" target="_blank" title="YouTube">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.54 3.55 12 3.55 12 3.55s-7.54 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.04 0 12 0 12s0 3.96.5 5.81a3.02 3.02 0 0 0 2.12 2.14C4.46 20.45 12 20.45 12 20.45s7.54 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.96 24 12 24 12s0-3.96-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/></svg>
+      </a>
+      <a href="https://open.spotify.com/artist/6GndH44hnFqySPvGrUQowx" target="_blank" title="Spotify">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>PHX — OUT NOW</span><span class="sep">✦</span>
+    <span>PLUG CITY RECORDS</span><span class="sep">✦</span>
+    <span>SURVIVE FT. INSPECTAH DECK</span><span class="sep">✦</span>
+    <span>AGAINST ALL ODDS FT. FREEWAY</span><span class="sep">✦</span>
+    <span>PHOENIX NEW TIMES BEST HIP-HOP ARTIST 2025</span><span class="sep">✦</span>
+    <span>ICE-T ENDORSED</span><span class="sep">✦</span>
+    <span>HOT 97 &bull; SWAY'S UNIVERSE &bull; ON THE RADAR</span><span class="sep">✦</span>
+    <span>PHX — OUT NOW</span><span class="sep">✦</span>
+    <span>PLUG CITY RECORDS</span><span class="sep">✦</span>
+    <span>SURVIVE FT. INSPECTAH DECK</span><span class="sep">✦</span>
+    <span>AGAINST ALL ODDS FT. FREEWAY</span><span class="sep">✦</span>
+    <span>PHOENIX NEW TIMES BEST HIP-HOP ARTIST 2025</span><span class="sep">✦</span>
+    <span>ICE-T ENDORSED</span><span class="sep">✦</span>
+    <span>HOT 97 &bull; SWAY'S UNIVERSE &bull; ON THE RADAR</span><span class="sep">✦</span>
+  </div>
+</div>
+
+<!-- PHX BREAKING -->
+<section id="phx">
+  <div class="phx-inner fi">
+    <div class="phx-badge">
+      <div class="phx-badge-text">New Single</div>
+      <div class="phx-badge-fire">🔥</div>
+      <div class="phx-badge-text">2026</div>
+    </div>
+    <div class="phx-info">
+      <h2>PHX — <em>Blowing Up</em></h2>
+      <p>Murkemz puts his city on his back in the hardest way possible. PHX is the anthem Phoenix has been waiting for — produced by PA. Dre, dropping as part of the Recess EP. Stream it everywhere now.</p>
+      <div class="phx-tags">
+        <span class="phx-tag">Recess EP — 2026</span>
+        <span class="phx-tag">Produced by PA. Dre</span>
+        <span class="phx-tag">Phoenix, AZ</span>
+        <span class="phx-tag">Pass the Butter / Plug City</span>
+      </div>
+    </div>
+    <div class="phx-streams">
+      <div class="phx-streams-num" id="phx-count">15K+</div>
+      <div class="phx-streams-label">Streams &amp; Climbing</div>
+      <div class="phx-stream-links">
+        <a href="https://open.spotify.com/artist/6GndH44hnFqySPvGrUQowx" target="_blank" class="stream-link">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          Spotify
+        </a>
+        <a href="https://music.apple.com/us/artist/murkemz/1372589508" target="_blank" class="stream-link">♪ Apple Music</a>
+        <a href="https://www.youtube.com/@murkemz2001" target="_blank" class="stream-link">▶ YouTube</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-grid fi">
+  <div class="stat"><div class="stat-num" data-count="27256">0</div><div class="stat-label">Monthly Spotify Listeners</div></div>
+  <div class="stat"><div class="stat-num" data-count="2000000">0</div><div class="stat-label">Monthly IG Views</div></div>
+  <div class="stat"><div class="stat-num" data-count="541872">0</div><div class="stat-label">Streams — Hadouken RMX</div></div>
+  <div class="stat"><div class="stat-num" data-count="8">0</div><div class="stat-label">Studio Albums</div></div>
+  <div class="stat"><div class="stat-num">2025</div><div class="stat-label">PHX New Times Best Hip-Hop</div></div>
+</div>
+
+<!-- MUSIC -->
+<section id="music">
+  <div class="section-tag">Discography</div>
+  <h2 class="section-title fi">The Catalog</h2>
+  <p class="section-desc fi">From the streets of Phoenix to Wu-Tang collaboration — every release, every stream, every co-sign.</p>
+  <div class="releases-grid fi">
+    <a href="https://open.spotify.com/artist/6GndH44hnFqySPvGrUQowx" target="_blank" class="release-card">
+      <div class="release-img-placeholder">PHX<br><small style="font-size:14px">2026</small></div>
+      <div class="release-body"><div class="release-tag">New Single — Blowing Up</div><div class="release-name">PHX</div><div class="release-meta">Recess EP · 2026 · Produced by PA. Dre</div><div class="release-streams">15K+ STREAMS</div></div>
+    </a>
+    <a href="https://open.spotify.com/track/OOEyvjrX8bo" target="_blank" class="release-card">
+      <img class="release-img" src="https://murkmerch.com/cdn/shop/files/A2EDD8D3-C35A-435F-A57B-7B6C0FDF26B1.jpg?v=1762300562" alt="Survive" onerror="this.style.display='none'"/>
+      <div class="release-body"><div class="release-tag">Wu-Tang Clan Feature</div><div class="release-name">Survive ft. Inspectah Deck</div><div class="release-meta">Single · 2025 · Wu-Tang / Plug City</div><div class="release-streams">244K STREAMS</div></div>
+    </a>
+    <a href="https://open.spotify.com/artist/6GndH44hnFqySPvGrUQowx" target="_blank" class="release-card">
+      <div class="release-img-placeholder">AGAINST<br>ALL ODDS</div>
+      <div class="release-body"><div class="release-tag">Roc-A-Fella Feature</div><div class="release-name">Against All Odds ft. Freeway</div><div class="release-meta">Single · Jan 2026 · Plug City Records</div><div class="release-streams">STREAMING NOW</div></div>
+    </a>
+    <a href="https://murkmerch.com/collections/music" target="_blank" class="release-card">
+      <img class="release-img" src="https://murkmerch.com/cdn/shop/files/5875F1C3-6F76-47CD-97DD-DC135D54E5A1.jpg?v=1762300562" alt="The Ayatollah" onerror="this.style.display='none'"/>
+      <div class="release-body"><div class="release-tag">Latest Album</div><div class="release-name">The Ayatollah</div><div class="release-meta">Album · 2025 · 12 Tracks · Trench Rap</div><div class="release-streams">BUY VINYL / CD</div></div>
+    </a>
+  </div>
+  <div class="spotify-embed-wrap fi">
+    <iframe src="https://open.spotify.com/embed/artist/6GndH44hnFqySPvGrUQowx?utm_source=generator&theme=0" height="380" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Murkemz on Spotify"></iframe>
+  </div>
+</section>
+
+<!-- PLATFORM PITCH -->
+<section id="platform">
+  <div class="platform-grid fi">
+    <div>
+      <div class="section-tag">The Platform</div>
+      <h2 class="section-title">Built Different.<br>Built for Artists.</h2>
+      <p class="section-desc" style="margin-bottom:32px">Every platform takes from artists. Plug City pays them. While Spotify pays $0.003 per stream, Plug City members pay artists directly — and artists keep 80% of every dollar.</p>
+      <div class="platform-features">
+        <div class="pf-item fi fi-d1">
+          <div class="pf-icon">🎵</div>
+          <div class="pf-text"><h4>Murk Radio — Artist-Owned Streaming</h4><p>Stream Murkemz's full catalog plus every artist on the platform, ad-free. No algorithm burying your favorite. Just the music.</p></div>
+        </div>
+        <div class="pf-item fi fi-d2">
+          <div class="pf-icon">🪙</div>
+          <div class="pf-text"><h4>Fan Ownership Drops</h4><p>Buy a percentage of future streaming royalties on new songs. Become a stakeholder — not just a listener.</p></div>
+        </div>
+        <div class="pf-item fi fi-d3">
+          <div class="pf-icon">🤖</div>
+          <div class="pf-text"><h4>AI Murk — Talk to the Artist</h4><p>A chatbot trained on Murkemz's lyrics, interviews, and persona. VIP members get 24/7 access to ask, explore, and connect.</p></div>
+        </div>
+        <div class="pf-item fi fi-d4">
+          <div class="pf-icon">📲</div>
+          <div class="pf-text"><h4>Wallet Pass — 90% Open Rate</h4><p>Your fan pass lives in Apple or Google Wallet. Push notifications to your lock screen, not lost in email.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="platform-visual fi">
+      <div class="platform-screen">
+        <div class="platform-screen-bar">
+          <div class="win-btn" style="background:#ff5f57"></div>
+          <div class="win-btn" style="background:#ffbd2e"></div>
+          <div class="win-btn" style="background:#28ca41"></div>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px;font-family:'Oswald',sans-serif;letter-spacing:2px">PLUG CITY — DASHBOARD</span>
+        </div>
+        <div class="platform-screen-content">
+          <div class="mini-card"><div class="mini-card-num">$4,280</div><div class="mini-card-label">This Month</div></div>
+          <div class="mini-card"><div class="mini-card-num">847</div><div class="mini-card-label">Active Fans</div></div>
+          <div class="mini-card"><div class="mini-card-num">27.2K</div><div class="mini-card-label">Streams</div></div>
+          <div class="mini-card"><div class="mini-card-num">12</div><div class="mini-card-label">New Orders</div></div>
+        </div>
+        <div style="margin-top:16px">
+          <div class="mini-bar-row"><div class="mini-bar-label"><span>Subscriptions</span><span style="color:var(--gold)">$2,100</span></div><div class="mini-bar"><div class="mini-bar-fill" style="width:72%"></div></div></div>
+          <div class="mini-bar-row" style="margin-top:10px"><div class="mini-bar-label"><span>Merch Sales</span><span style="color:var(--gold)">$980</span></div><div class="mini-bar"><div class="mini-bar-fill" style="width:40%"></div></div></div>
+          <div class="mini-bar-row" style="margin-top:10px"><div class="mini-bar-label"><span>Music Sales</span><span style="color:var(--gold)">$640</span></div><div class="mini-bar"><div class="mini-bar-fill" style="width:28%"></div></div></div>
+          <div class="mini-bar-row" style="margin-top:10px"><div class="mini-bar-label"><span>Beat Licenses</span><span style="color:var(--gold)">$560</span></div><div class="mini-bar"><div class="mini-bar-fill" style="width:22%"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section id="plans">
+  <div class="section-tag">Membership</div>
+  <h2 class="section-title fi" style="text-align:center">Murk Pass</h2>
+  <p class="section-desc fi" style="text-align:center;margin:0 auto 56px">More than a fan club — it's ownership. Pick your tier, get real access to the movement.</p>
+  <div class="plans-grid fi">
+    <div class="plan">
+      <div class="plan-name silver">Street Pass</div>
+      <div class="plan-price"><div class="plan-price-big">$4</div><div class="plan-price-per">/month</div></div>
+      <p class="plan-desc">Jump in. Stream everything and stay locked in with the culture.</p>
+      <ul class="plan-features-list">
+        <li class="plan-feature on"><span class="check yes">✓</span>Murk Radio — ad-free streaming</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Full Murkemz catalog access</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Access to all platform artists</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>10% off all merch</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Early ticket access</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Member newsletter drops</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Digital fan card (Wallet Pass)</li>
+        <li class="plan-feature"><span class="check no">–</span>Exclusive tracks &amp; freestyles</li>
+        <li class="plan-feature"><span class="check no">–</span>AI Murk chatbot access</li>
+        <li class="plan-feature"><span class="check no">–</span>Signed monthly item</li>
+      </ul>
+      <button class="plan-btn outline-gold" onclick="alert('Subscription launching soon! Join the waitlist at the bottom of this page.')">Start Free — $4/mo</button>
+    </div>
+    <div class="plan featured">
+      <div class="plan-hot">Most Popular</div>
+      <div class="plan-name gold">Murk Mode</div>
+      <div class="plan-price"><div class="plan-price-big">$12</div><div class="plan-price-per">/month</div></div>
+      <p class="plan-desc">The real fan experience — exclusive drops, behind the scenes, and early access before anyone.</p>
+      <ul class="plan-features-list">
+        <li class="plan-feature on"><span class="check yes">✓</span>Everything in Street Pass</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Exclusive tracks &amp; freestyles</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>48hr early release access</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Behind-the-scenes content</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>AI Murk chatbot access</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Live stream access</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>15% off all merch</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Fan ownership drop invites</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Extended Murk Radio (guest sets)</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Beat portal early access</li>
+      </ul>
+      <button class="plan-btn filled-gold" onclick="alert('Subscription launching soon! Join the waitlist at the bottom of this page.')">Go Murk Mode — $12/mo</button>
+    </div>
+    <div class="plan">
+      <div class="plan-name plat">Ayatollah</div>
+      <div class="plan-price"><div class="plan-price-big">$25</div><div class="plan-price-per">/month</div></div>
+      <p class="plan-desc">The inner circle. Monthly signed drops, VIP access, and your name in the credits forever.</p>
+      <ul class="plan-features-list">
+        <li class="plan-feature on"><span class="check yes">✓</span>Everything in Murk Mode</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Monthly signed item (vinyl/tee/CD)</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>VIP concert entry + meet &amp; greet</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Name in album liner notes</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Direct DM access to Murkemz</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>25% off all merch — forever</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Vote on merch designs &amp; setlists</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Unreleased vault access</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Priority shoutout orders</li>
+        <li class="plan-feature on"><span class="check yes">✓</span>Fan ownership royalty drops</li>
+      </ul>
+      <button class="plan-btn outline-gold" style="border-color:var(--gold-l);color:var(--gold-l)" onclick="alert('Ayatollah Tier — Inner circle only. Join the waitlist below.')">Join the Inner Circle</button>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM PREVIEW -->
+<style>
+#plat-preview{background:linear-gradient(180deg,#0a0a14 0%,#080810 100%);padding:6rem 1.5rem}
+#plat-preview .section-title{margin-bottom:.5rem}
+.pv-tabs{display:flex;gap:.5rem;justify-content:center;margin:2.2rem 0;flex-wrap:wrap}
+.pv-tab{padding:.55rem 1.3rem;border-radius:30px;border:1px solid rgba(201,168,76,.2);background:transparent;color:rgba(240,240,245,.5);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .18s;font-family:inherit}
+.pv-tab:hover{border-color:rgba(201,168,76,.4);color:#C9A84C}
+.pv-tab.active{background:rgba(201,168,76,.14);border-color:#C9A84C;color:#C9A84C}
+.pv-panel{display:none;animation:pvIn .35s ease}
+.pv-panel.active{display:block}
+@keyframes pvIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.pv-mockup{background:#0d0d18;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;margin-bottom:2rem;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.pv-mock-bar{background:#111120;padding:.75rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)}
+.pv-mock-bar-title{font-size:.82rem;font-weight:700;color:#F0F0F5}
+.pv-mock-bar-chip{font-size:.68rem;font-weight:700;padding:.22rem .65rem;border-radius:20px;background:rgba(201,168,76,.15);color:#C9A84C;border:1px solid rgba(201,168,76,.3)}
+.pv-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05)}
+.pv-kpi{background:#0d0d18;padding:.9rem 1.2rem}
+.pv-kn{font-size:1.35rem;font-weight:800;color:#F0F0F5;margin-bottom:.15rem}
+.pv-kn.g{color:#C9A84C}
+.pv-kl{font-size:.65rem;color:rgba(240,240,245,.38);text-transform:uppercase;letter-spacing:.07em}
+.pv-body{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;padding:1.2rem}
+.pv-col{display:flex;flex-direction:column;gap:.9rem}
+.pv-card{background:#131322;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:.9rem}
+.pv-card-title{font-size:.68rem;font-weight:700;color:rgba(240,240,245,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem;padding-bottom:.45rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.pv-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.78rem;color:rgba(240,240,245,.65)}
+.pv-row:last-child{border-bottom:none}
+.pv-row .g{color:#C9A84C;font-weight:700}
+.pv-row .r{color:#F87171}
+.pv-row.bold span:last-child{font-weight:800}
+.pv-inc-title{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:rgba(240,240,245,.35);margin:.1rem 0 .45rem}
+.pv-inc-list{list-style:none;padding:0}
+.pv-inc-list li{font-size:.78rem;color:rgba(240,240,245,.6);padding:.2rem 0;padding-left:1rem;position:relative}
+.pv-inc-list li::before{content:'✓';position:absolute;left:0;color:#C9A84C;font-size:.68rem}
+.pv-tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:.25rem}
+.pv-tier-card{background:#0d0d18;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.55rem}
+.pv-tier-card.feat{border-color:rgba(201,168,76,.4);box-shadow:0 0 28px rgba(201,168,76,.08)}
+.pv-tier-name{font-size:.9rem;font-weight:800;color:#F0F0F5}
+.pv-tier-price{font-size:1.35rem;font-weight:900;color:#C9A84C}
+.pv-tier-list{list-style:none;padding:0;flex:1}
+.pv-tier-list li{font-size:.78rem;color:rgba(240,240,245,.58);padding:.2rem 0;padding-left:1.05rem;position:relative}
+.pv-tier-list li::before{content:'✓';position:absolute;left:0;color:#C9A84C;font-size:.67rem}
+.pv-tier-badge{margin-top:.4rem;padding:.3rem .75rem;border-radius:20px;font-size:.7rem;font-weight:700;text-align:center;background:rgba(255,255,255,.05);color:rgba(240,240,245,.45);border:1px solid rgba(255,255,255,.07)}
+.pv-tier-badge.hl{background:rgba(201,168,76,.15);color:#C9A84C;border-color:rgba(201,168,76,.3)}
+.pv-desc{font-size:.8rem;color:rgba(240,240,245,.5);line-height:1.6;margin:.5rem 0 1.2rem}
+.pv-track-row{display:flex;align-items:center;gap:.6rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.pv-track-row:last-child{border-bottom:none}
+.pv-track-num{font-size:.68rem;color:rgba(240,240,245,.3);width:16px;text-align:center}
+.pv-track-info{flex:1}
+.pv-track-name{font-size:.78rem;font-weight:600;color:#F0F0F5}
+.pv-track-feat{font-size:.68rem;color:rgba(240,240,245,.4)}
+.pv-track-lock{font-size:.65rem;background:rgba(201,168,76,.12);color:#C9A84C;padding:.15rem .5rem;border-radius:10px;border:1px solid rgba(201,168,76,.2)}
+@media(max-width:768px){
+  .pv-kpis{grid-template-columns:repeat(2,1fr)}
+  .pv-body{grid-template-columns:1fr}
+  .pv-tier-grid{grid-template-columns:1fr}
+}
+</style>
+<section id="plat-preview">
+  <div class="section-tag fi">Platform Preview</div>
+  <h2 class="section-title fi">Four views.<br><span style="color:var(--gold)">One platform.</span></h2>
+  <p class="section-desc fi">Toggle between every user type to see exactly what fans, artists, and label ops experience inside Plug City.</p>
+
+  <div class="pv-tabs fi">
+    <button class="pv-tab active" onclick="showPV('fan','this')">🎵 Fan App</button>
+    <button class="pv-tab" onclick="showPV('artist','this')">🎤 Artist View</button>
+    <button class="pv-tab" onclick="showPV('admin','this')">⚙️ Label Admin</button>
+  </div>
+
+  <!-- ── FAN APP ──────────────────────────────── -->
+  <div class="pv-panel active" id="pv-fan">
+    <div class="pv-mockup">
+      <div class="pv-mock-bar">
+        <span class="pv-mock-bar-title">🎵 Fan Dashboard — @desert_wave</span>
+        <span class="pv-mock-bar-chip">Murk Pass · Native</span>
+      </div>
+      <div class="pv-kpis">
+        <div class="pv-kpi"><div class="pv-kn">48</div><div class="pv-kl">Tracks Streamed</div></div>
+        <div class="pv-kpi"><div class="pv-kn g">$15/mo</div><div class="pv-kl">Pass Cost</div></div>
+        <div class="pv-kpi"><div class="pv-kn">6</div><div class="pv-kl">Active Perks</div></div>
+        <div class="pv-kpi"><div class="pv-kn">3</div><div class="pv-kl">Merch Orders</div></div>
+      </div>
+      <div class="pv-body">
+        <div class="pv-col">
+          <div class="pv-card">
+            <div class="pv-card-title">Exclusive Catalog</div>
+            <div class="pv-track-row"><span class="pv-track-num">1</span><div class="pv-track-info"><div class="pv-track-name">PHX</div><div class="pv-track-feat">Murkemz</div></div></div>
+            <div class="pv-track-row"><span class="pv-track-num">2</span><div class="pv-track-info"><div class="pv-track-name">Against All Odds</div><div class="pv-track-feat">Murkemz feat. Ill Bill</div></div></div>
+            <div class="pv-track-row"><span class="pv-track-num">3</span><div class="pv-track-info"><div class="pv-track-name">Hadouken RMX</div><div class="pv-track-feat">Murkemz feat. Vinnie Paz</div></div></div>
+            <div class="pv-track-row"><span class="pv-track-num">4</span><div class="pv-track-info"><div class="pv-track-name">Survive</div><div class="pv-track-feat">Murkemz</div></div><span class="pv-track-lock">🔒 Insider</span></div>
+          </div>
+          <div class="pv-inc-title">Active Perks (Native Pass)</div>
+          <ul class="pv-inc-list">
+            <li>10% off all murkmerch.com orders</li>
+            <li>Early access to drops &amp; ticket pre-sales</li>
+            <li>Member-only livestream access</li>
+            <li>Bonus content unlocked each month</li>
+          </ul>
+        </div>
+        <div class="pv-col">
+          <div class="pv-card">
+            <div class="pv-card-title">Murk Pass Tiers — What You Unlock</div>
+            <div class="pv-row"><span>Explorer ($7/mo)</span><span>Catalog + 1 exclusive/mo</span></div>
+            <div class="pv-row"><span>Native ($15/mo)</span><span>Full catalog + perks</span></div>
+            <div class="pv-row"><span>Insider ($29/mo)</span><span class="g">All access + direct fan DMs</span></div>
+          </div>
+          <div class="pv-card">
+            <div class="pv-card-title">AI Fan Chat</div>
+            <div class="pv-desc">Ask anything about Murkemz — discography, history, upcoming drops, collaborators — powered by an AI trained on the full catalog.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pv-tier-grid">
+      <div class="pv-tier-card"><div class="pv-tier-name">Explorer</div><div class="pv-tier-price">$7/mo</div><ul class="pv-tier-list"><li>Core catalog access</li><li>1 exclusive track per month</li><li>Murk Radio stream</li><li>Basic merch discount</li></ul><div class="pv-tier-badge">Start here</div></div>
+      <div class="pv-tier-card feat"><div class="pv-tier-name">Native</div><div class="pv-tier-price">$15/mo</div><ul class="pv-tier-list"><li>Full catalog + exclusives</li><li>All active perks unlocked</li><li>Ticket pre-sales access</li><li>Member livestreams</li><li>AI Fan Chat</li></ul><div class="pv-tier-badge hl">Most popular</div></div>
+      <div class="pv-tier-card"><div class="pv-tier-name">Insider</div><div class="pv-tier-price">$29/mo</div><ul class="pv-tier-list"><li>Everything in Native</li><li>Direct fan DMs to Murkemz</li><li>Unreleased snippet previews</li><li>Credits in liner notes</li><li>Early merch access</li></ul><div class="pv-tier-badge">Full access</div></div>
+    </div>
+  </div>
+
+  <!-- ── ARTIST VIEW ──────────────────────────── -->
+  <div class="pv-panel" id="pv-artist">
+    <div class="pv-mockup">
+      <div class="pv-mock-bar">
+        <span class="pv-mock-bar-title">🎤 Artist Dashboard — Murkemz</span>
+        <span class="pv-mock-bar-chip">Verified Artist · Label Roster</span>
+      </div>
+      <div class="pv-kpis">
+        <div class="pv-kpi"><div class="pv-kn">2,184</div><div class="pv-kl">Pass Subscribers</div></div>
+        <div class="pv-kpi"><div class="pv-kn g">$14,887</div><div class="pv-kl">MRR</div></div>
+        <div class="pv-kpi"><div class="pv-kn">42K</div><div class="pv-kl">Profile Views/mo</div></div>
+        <div class="pv-kpi"><div class="pv-kn">6</div><div class="pv-kl">Songs on Platform</div></div>
+      </div>
+      <div class="pv-body">
+        <div class="pv-col">
+          <div class="pv-card">
+            <div class="pv-card-title">Monthly Revenue Breakdown</div>
+            <div class="pv-row"><span>Explorer × 1,200</span><span class="g">$8,400</span></div>
+            <div class="pv-row"><span>Native × 800</span><span class="g">$12,000</span></div>
+            <div class="pv-row"><span>Insider × 184</span><span class="g">$5,336</span></div>
+            <div class="pv-row"><span>Platform Share (20%)</span><span class="r">−$5,147</span></div>
+            <div class="pv-row bold"><span>Net to Artist</span><span class="g">$14,887</span></div>
+          </div>
+          <div class="pv-inc-title">What the artist dashboard includes</div>
+          <ul class="pv-inc-list">
+            <li>Real-time subscriber analytics</li>
+            <li>Revenue P&amp;L with projections</li>
+            <li>Track upload + exclusive gating</li>
+            <li>Direct fan messaging (Insider tier)</li>
+            <li>Merch store management</li>
+            <li>Label communication portal</li>
+          </ul>
+        </div>
+        <div class="pv-col">
+          <div class="pv-card">
+            <div class="pv-card-title">Top Performing Tracks</div>
+            <div class="pv-row"><span>PHX</span><span class="g">15.2K streams</span></div>
+            <div class="pv-row"><span>Against All Odds</span><span>8.7K streams</span></div>
+            <div class="pv-row"><span>Hadouken RMX</span><span>6.1K streams</span></div>
+            <div class="pv-row"><span>Survive</span><span>4.9K streams</span></div>
+          </div>
+          <div class="pv-card">
+            <div class="pv-card-title">Upcoming</div>
+            <div class="pv-row"><span>Jun 21 — Shady Park (sold out)</span><span class="g">✓</span></div>
+            <div class="pv-row"><span>Jul 4 — Desert Block Party</span><span>142 left</span></div>
+            <div class="pv-row"><span>Merch drop scheduled</span><span>Jul 15</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:1rem;color:rgba(240,240,245,.45);font-size:.85rem">Artists on Plug City keep <strong style="color:#C9A84C">80% of all fan pass revenue</strong> — highest split in independent music.</div>
+  </div>
+
+  <!-- ── ADMIN VIEW ───────────────────────────── -->
+  <div class="pv-panel" id="pv-admin">
+    <div class="pv-mockup">
+      <div class="pv-mock-bar">
+        <span class="pv-mock-bar-title">⚙️ Label Operations — Plug City Records</span>
+        <span class="pv-mock-bar-chip" style="background:rgba(239,68,68,.12);color:#F87171;border-color:rgba(239,68,68,.3)">Admin · Murkemz + Bryce</span>
+      </div>
+      <div class="pv-kpis">
+        <div class="pv-kpi"><div class="pv-kn">2,184</div><div class="pv-kl">Total Subscribers</div></div>
+        <div class="pv-kpi"><div class="pv-kn g">$14,887</div><div class="pv-kl">Platform MRR</div></div>
+        <div class="pv-kpi"><div class="pv-kn">3</div><div class="pv-kl">Artists Rostered</div></div>
+        <div class="pv-kpi"><div class="pv-kn">94%</div><div class="pv-kl">Retention Rate</div></div>
+      </div>
+      <div class="pv-body">
+        <div class="pv-col">
+          <div class="pv-card">
+            <div class="pv-card-title">10 Revenue Streams</div>
+            <div class="pv-row"><span>Fan Pass Subscriptions</span><span class="g">$9,840</span></div>
+            <div class="pv-row"><span>Merch &amp; Drops</span><span class="g">$1,200</span></div>
+            <div class="pv-row"><span>Event Tickets</span><span class="g">$2,100</span></div>
+            <div class="pv-row"><span>AI Feature Upgrades</span><span class="g">$470</span></div>
+            <div class="pv-row"><span>Label Licensing</span><span class="g">$1,277</span></div>
+            <div class="pv-row bold"><span>Total MRR</span><span class="g">$14,887</span></div>
+          </div>
+        </div>
+        <div class="pv-col">
+          <div class="pv-card">
+            <div class="pv-card-title">Active Alerts</div>
+            <div class="pv-row"><span>🟢 New subscriber surge (+47 today)</span></div>
+            <div class="pv-row"><span>🟡 Merch inventory low — reorder</span></div>
+            <div class="pv-row"><span>🟢 PHX climbing on all DSPs</span></div>
+            <div class="pv-row"><span>🔵 Revenue milestone: $14K+ MRR</span></div>
+          </div>
+          <div class="pv-inc-title">What Label Admin includes</div>
+          <ul class="pv-inc-list">
+            <li>Full platform revenue OS</li>
+            <li>Roster artist management</li>
+            <li>Contract + split tracking</li>
+            <li>Push notifications to all fans</li>
+            <li>Analytics across all 10 streams</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:1rem;color:rgba(240,240,245,.45);font-size:.85rem">The Admin OS gives Murkemz and Bryce full visibility into every dollar across the platform — no spreadsheets required.</div>
+  </div>
+</section>
+<script>
+function showPV(type,el){
+  var btn=event.currentTarget||event.target;
+  document.querySelectorAll('.pv-tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.pv-panel').forEach(function(p){p.classList.remove('active')});
+  btn.classList.add('active');
+  var panel=document.getElementById('pv-'+type);
+  if(panel)panel.classList.add('active');
+}
+</script>
+
+<!-- RADIO -->
+<section id="radio">
+  <div class="section-tag">Streaming</div>
+  <h2 class="section-title fi">Murk Radio</h2>
+  <p class="section-desc fi">Artist-owned. Algorithm-free. Stream Murkemz and the full Plug City roster, plus guest sets from artists in the circle — Wu-Tang affiliates, Phoenix legends, underground heat.</p>
+  <div class="radio-hero fi">
+    <div class="radio-vinyl" id="radio-vinyl"></div>
+    <div class="radio-info">
+      <h2>Now Streaming</h2>
+      <div class="radio-now">
+        <span class="radio-now-label">Playing</span>
+        <span class="radio-now-track" id="radio-track-name">PHX — Murkemz</span>
+      </div>
+      <div class="radio-waveform">
+        <div class="wave-bar" style="animation-delay:0s"></div>
+        <div class="wave-bar" style="animation-delay:.1s"></div>
+        <div class="wave-bar" style="animation-delay:.2s"></div>
+        <div class="wave-bar" style="animation-delay:.3s"></div>
+        <div class="wave-bar" style="animation-delay:.4s"></div>
+        <div class="wave-bar" style="animation-delay:.2s"></div>
+        <div class="wave-bar" style="animation-delay:.1s"></div>
+        <div class="wave-bar" style="animation-delay:.3s"></div>
+        <span style="font-size:11px;color:var(--muted);margin-left:12px;font-family:'Oswald',sans-serif;letter-spacing:2px">LIVE ON MURK RADIO</span>
+      </div>
+      <p>Available ad-free for all Murk Pass members. Exclusive sessions, live freestyles, and drop previews only on Plug City.</p>
+    </div>
+    <button class="play-btn" onclick="openPlayer()">▶</button>
+  </div>
+</section>
+
+<!-- ARTISTS -->
+<section id="artists">
+  <div class="section-tag">On The Platform</div>
+  <h2 class="section-title fi">The Roster</h2>
+  <p class="section-desc fi">Plug City is open. Independent artists across all levels stream their music here, own their fans, and keep 80% of what their supporters pay.</p>
+  <div class="artists-grid fi">
+    <a href="app.html" class="artist-card">
+      <div class="artist-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/IMG-8437.jpg?v=1763879859" alt="Murkemz" onerror="this.style.background='var(--bg4)'"/>
+      </div>
+      <div class="artist-badge">Flagship</div>
+      <div class="artist-body">
+        <div class="artist-name">Murkemz</div>
+        <div class="artist-genre">Trench Rap · Boom Bap · Phoenix AZ</div>
+        <div class="artist-stats">
+          <div class="artist-stat"><strong>27.2K</strong>Listeners</div>
+          <div class="artist-stat"><strong>8</strong>Albums</div>
+          <div class="artist-stat"><strong>541K</strong>Top Stream</div>
+        </div>
+      </div>
+    </a>
+    <div class="artist-card" style="opacity:.6">
+      <div class="artist-img-wrap" style="background:var(--bg4);display:flex;align-items:center;justify-content:center;aspect-ratio:1"><span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold-d)">AZ</span></div>
+      <div class="artist-body"><div class="artist-name">Arizona Artists</div><div class="artist-genre">Various Genres · Phoenix &amp; Tucson</div><div class="artist-stats"><div class="artist-stat"><strong>Soon</strong>Joining</div></div></div>
+    </div>
+    <div class="artist-card" style="opacity:.6">
+      <div class="artist-img-wrap" style="background:var(--bg4);display:flex;align-items:center;justify-content:center;aspect-ratio:1"><span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold-d)">UG</span></div>
+      <div class="artist-body"><div class="artist-name">Underground Hip-Hop</div><div class="artist-genre">National Independent Artists</div><div class="artist-stats"><div class="artist-stat"><strong>Q3 '26</strong>Launch</div></div></div>
+    </div>
+    <div class="artist-card" style="opacity:.6">
+      <div class="artist-img-wrap" style="background:var(--bg4);display:flex;align-items:center;justify-content:center;aspect-ratio:1"><span style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold-d)">+</span></div>
+      <div class="artist-body"><div class="artist-name">Your Name Here</div><div class="artist-genre">Apply to Join Plug City Platform</div><div class="artist-stats"><div class="artist-stat"><strong>80%</strong>Revenue Split</div></div></div>
+    </div>
+  </div>
+  <div class="artist-join fi">
+    <h3>Are You An Artist?</h3>
+    <p>Join the Plug City platform. Own your fans, keep 80% of your revenue, and build something that belongs to you — not a streaming algorithm.</p>
+    <a href="artist.html" class="btn btn-gold">Apply to Join the Platform →</a>
+  </div>
+</section>
+
+<!-- STORE -->
+<section id="store">
+  <div class="section-tag">Official Merch</div>
+  <h2 class="section-title fi">The Store</h2>
+  <p class="section-desc fi">Limited runs, quality pieces. Murk Pass members get 10-25% off everything, every time.</p>
+  <div class="store-grid fi">
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/IMG-8437.jpg?v=1763879859&width=533" alt="Ayatollah Bundle" loading="lazy"/>
+        <span class="product-label sale">SALE</span>
+        <div class="product-hover"><a href="https://murkmerch.com" target="_blank" class="btn btn-gold btn-sm">Buy Now</a></div>
+      </div>
+      <div class="product-body"><div class="product-cat">Bundle</div><div class="product-name">The Ayatollah — Tee + CD + Vinyl</div><div class="product-price"><span class="product-price-current">$100</span><span class="product-price-orig">$125</span></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/We_Outside_Oversized_T-Shirt.jpg?v=1731035439&width=533" alt="We Outside Tee" loading="lazy"/>
+        <div class="product-hover"><a href="https://murkmerch.com" target="_blank" class="btn btn-gold btn-sm">Buy Now</a></div>
+      </div>
+      <div class="product-body"><div class="product-cat">Apparel</div><div class="product-name">WE OUTSIDE Oversized T-Shirt</div><div class="product-price"><span class="product-price-current">$50</span></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/5875F1C3-6F76-47CD-97DD-DC135D54E5A1.jpg?v=1762300562&width=533" alt="The Ayatollah Vinyl" loading="lazy"/>
+        <span class="product-label new">VINYL</span>
+        <div class="product-hover"><a href="https://murkmerch.com" target="_blank" class="btn btn-gold btn-sm">Buy Now</a></div>
+      </div>
+      <div class="product-body"><div class="product-cat">Vinyl</div><div class="product-name">The Ayatollah — Vinyl LP</div><div class="product-price"><span class="product-price-current">$50</span></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/IMG-8374.jpg?v=1762300509&width=533" alt="AZ Sunset Tee" loading="lazy"/>
+        <div class="product-hover"><a href="https://murkmerch.com" target="_blank" class="btn btn-gold btn-sm">Buy Now</a></div>
+      </div>
+      <div class="product-body"><div class="product-cat">Apparel</div><div class="product-name">Murkemz AZ Sunset Logo Tee</div><div class="product-price"><span class="product-price-current">$30</span></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/Greatest_Flow_on_Earth_TS.jpg?v=1731037523&width=533" alt="GFE Vol.2 Tee" loading="lazy"/>
+        <div class="product-hover"><a href="https://murkmerch.com" target="_blank" class="btn btn-gold btn-sm">Buy Now</a></div>
+      </div>
+      <div class="product-body"><div class="product-cat">Apparel</div><div class="product-name">Greatest Flow on Earth Vol.2 Cover Art Tee</div><div class="product-price"><span class="product-price-current">$35</span></div></div>
+    </div>
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="https://murkmerch.com/cdn/shop/files/A2EDD8D3-C35A-435F-A57B-7B6C0FDF26B1.jpg?v=1762300562&width=533" alt="Ayatollah CD" loading="lazy"/>
+        <div class="product-hover"><a href="https://murkmerch.com" target="_blank" class="btn btn-gold btn-sm">Buy Now</a></div>
+      </div>
+      <div class="product-body"><div class="product-cat">Music</div><div class="product-name">The Ayatollah — CD</div><div class="product-price"><span class="product-price-current">$25</span></div></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:36px"><a href="https://murkmerch.com" target="_blank" class="btn btn-outline">View Full Store at murkmerch.com →</a></div>
+</section>
+
+<!-- PRESS -->
+<section id="press">
+  <div class="section-tag">Credibility</div>
+  <h2 class="section-title fi">The Co-Signs</h2>
+  <p class="section-desc fi">When legends say your name, that's not hype — that's confirmation.</p>
+  <div class="collab-strip fi">
+    <span class="collab-pill">Inspectah Deck — Wu-Tang Clan</span>
+    <span class="collab-pill">Freeway — Roc-A-Fella Records</span>
+    <span class="collab-pill">Chris Webby</span>
+    <span class="collab-pill">Ice-T — Grammy Red Carpet</span>
+    <span class="collab-pill">Hot 97 — Funk Flex</span>
+    <span class="collab-pill">Sway's Universe — 5 Fingers of Death</span>
+    <span class="collab-pill">On the Radar</span>
+    <span class="collab-pill">PHX New Times Best Hip-Hop 2025</span>
+  </div>
+  <div class="press-grid fi">
+    <div class="press-card"><div class="press-source">Ice-T</div><p class="press-quote">"<em>One of his favorite rappers</em>" — publicly co-signed on the Grammy Awards red carpet after discovering a freestyle on Twitter. Mentorship followed.</p></div>
+    <div class="press-card"><div class="press-source">Phoenix New Times — 2025</div><p class="press-quote">"Flat-out one of the hardest-working emcees shaking up the national scene. Switches flows and tempos <em>like gears in an Italian exotic</em> — smooth, aggressive, always pushing the redline."</p></div>
+    <div class="press-card"><div class="press-source">Wu-Tang Clan — Inspectah Deck</div><p class="press-quote">Selected personally by Deck for "Survive." Murkemz completed his verse in two hours, filmed in San Diego, and spent time with <em>RZA, Raekwon, and Ghostface Killah</em>.</p></div>
+    <div class="press-card"><div class="press-source">Sway's Universe</div><p class="press-quote">Completed the legendary <em>5 Fingers of Death</em> freestyle — a rite of passage for only the hardest MCs in the game.</p></div>
+    <div class="press-card"><div class="press-source">Hot 97 — Funk Flex</div><p class="press-quote">Featured on <em>one of hip-hop's most legendary platforms</em>. Proved his bars belong at every level of the industry.</p></div>
+    <div class="press-card"><div class="press-source">Freeway — Roc-A-Fella</div><p class="press-quote">"Against All Odds" — collaborating with the Philly legend who ran alongside Jay-Z's crew. <em>The reach keeps growing.</em></p></div>
+  </div>
+</section>
+
+<!-- ABOUT LABEL -->
+<section id="label">
+  <div class="label-grid fi">
+    <div class="label-img">
+      <img class="label-img-inner" src="https://murkmerch.com/cdn/shop/files/IMG-8437.jpg?v=1763879859" alt="Murkemz — Plug City Records" onerror="this.src='https://placehold.co/600x800/111/C9A84C?text=PLUG+CITY'"/>
+    </div>
+    <div class="label-content">
+      <div class="section-tag">The Label</div>
+      <h2 class="section-title">Plug City<br>Records</h2>
+      <blockquote class="label-quote">"Only the strong survive, man. That's all I can say right there."</blockquote>
+      <p class="label-body">Queens-born, Phoenix-raised. Murkemz didn't wait for a label to discover him — he built one. Pass the Butter / Plug City Records is the house, the brand, and the business. Every record is owned. Every fan is known. Every dollar is tracked.</p>
+      <p class="label-body">With Wu-Tang, Roc-A-Fella, and Ice-T in his corner — and 2M+ monthly Instagram views of organic content — Plug City is the infrastructure that turns moments into movements.</p>
+      <div class="label-team">
+        <div class="team-member">
+          <div class="team-avatar">M</div>
+          <div class="team-info"><div class="name">Murkemz</div><div class="role">Artist / CEO / Plug City Records</div></div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar">B</div>
+          <div class="team-info"><div class="name">Bryce Breeze</div><div class="role">Manager / Co-Owner</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE CALCULATOR -->
+<section id="calculator">
+  <div class="calc-inner">
+    <div class="section-tag" style="justify-content:center">See The Math</div>
+    <h2 class="section-title fi" style="margin-bottom:8px">Your Support = Real Income</h2>
+    <p style="font-size:15px;color:var(--muted);line-height:1.7;max-width:480px;margin:0 auto 40px">Slide to see how fan subscriptions translate to real, recurring monthly income — independent of any label.</p>
+    <div class="calc-slider-wrap">
+      <div class="calc-label">Number of Murk Pass Subscribers: <span id="calc-fan-count" style="color:var(--gold)">500</span></div>
+      <input type="range" id="calc-slider" min="100" max="5000" value="500" step="50" oninput="updateCalc(this.value)"/>
+      <div class="calc-value" id="calc-total">$6,000</div>
+      <div class="calc-subtitle">estimated monthly recurring revenue</div>
+    </div>
+    <div class="calc-breakdown fi">
+      <div class="calc-item"><div class="calc-item-label">Subscriptions Only</div><div class="calc-item-value" id="calc-subs">$6,000</div></div>
+      <div class="calc-item"><div class="calc-item-label">+ Merch (est. 15% buy/mo)</div><div class="calc-item-value" id="calc-merch">$2,250</div></div>
+      <div class="calc-item"><div class="calc-item-label">= Total Monthly Est.</div><div class="calc-item-value" id="calc-combined" style="color:var(--gold)">$8,250</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--muted2);margin-top:20px">Based on avg. $12/mo per subscriber blended tier rate. Merch calculated at $30 avg. order. Does not include beats, sync, shoutouts, or live events.</p>
+  </div>
+</section>
+
+<!-- APP CTA -->
+<section id="app-cta">
+  <h2 class="app-cta-title fi">The App Is<br><span>Coming</span></h2>
+  <p class="app-cta-desc fi">Install the Plug City web app now — no App Store needed. Works on your phone like a native app. When the full iOS &amp; Android app drops, you'll be first in line.</p>
+  <div class="app-install-row fi">
+    <a href="app.html" class="app-install-btn">
+      <span class="app-install-icon">📱</span>
+      <div class="app-install-text"><small>Open Now</small><strong>Web App</strong></div>
+    </a>
+    <a href="#" class="app-install-btn" onclick="alert('iOS app coming Q4 2026 — join the waitlist below!')">
+      <span class="app-install-icon">🍎</span>
+      <div class="app-install-text"><small>Coming Q4 2026</small><strong>App Store</strong></div>
+    </a>
+    <a href="#" class="app-install-btn" onclick="alert('Android app coming Q4 2026 — join the waitlist below!')">
+      <span class="app-install-icon">🤖</span>
+      <div class="app-install-text"><small>Coming Q4 2026</small><strong>Google Play</strong></div>
+    </a>
+  </div>
+  <p class="pwa-note fi">Add to your home screen from your browser for a full native experience — no download required.</p>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="section-tag" style="justify-content:center">Stay Locked In</div>
+  <h2 class="section-title fi" style="margin-bottom:12px">Drop Your Email</h2>
+  <p style="font-size:15px;color:var(--muted);max-width:400px;margin:0 auto" class="fi">First to know about new music, merch drops, Murk Pass launches, and exclusive Plug City announcements.</p>
+  <div class="nl-form fi">
+    <input type="email" class="nl-input" placeholder="your@email.com" id="nl-email"/>
+    <button class="btn btn-gold" onclick="handleNewsletter()">Subscribe</button>
+  </div>
+  <p style="font-size:12px;color:var(--muted2);margin-top:14px" class="fi">No spam. Just the movement. Unsubscribe anytime.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <h3>PLUG CITY</h3>
+      <p>Records &bull; Platform &bull; Movement<br/>Pass the Butter / Plug City Records<br/>Phoenix, Arizona &bull; Est. 2020</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul class="footer-links">
+        <li><a href="app.html">Stream Music</a></li>
+        <li><a href="#plans">Murk Pass</a></li>
+        <li><a href="artist.html">For Artists</a></li>
+        <li><a href="admin.html">Admin Login</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Music</h4>
+      <ul class="footer-links">
+        <li><a href="https://open.spotify.com/artist/6GndH44hnFqySPvGrUQowx" target="_blank">Spotify</a></li>
+        <li><a href="https://music.apple.com/us/artist/murkemz/1372589508" target="_blank">Apple Music</a></li>
+        <li><a href="https://www.youtube.com/@murkemz2001" target="_blank">YouTube</a></li>
+        <li><a href="https://murkmerch.com" target="_blank">Official Store</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul class="footer-links">
+        <li><a href="https://www.instagram.com/murkemz/" target="_blank">@murkemz</a></li>
+        <li><a href="https://www.tiktok.com/@murktheayatollah" target="_blank">@murktheayatollah</a></li>
+        <li><a href="https://twitter.com/Murkemz" target="_blank">@Murkemz</a></li>
+        <li><a href="https://www.facebook.com/JMurkemz" target="_blank">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Pass the Butter / Plug City Records. All rights reserved. Built for the independent era.</div>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/murkemz/" target="_blank" class="footer-social">IG</a>
+      <a href="https://www.tiktok.com/@murktheayatollah" target="_blank" class="footer-social">TK</a>
+      <a href="https://twitter.com/Murkemz" target="_blank" class="footer-social">X</a>
+      <a href="https://www.youtube.com/@murkemz2001" target="_blank" class="footer-social">YT</a>
+      <a href="https://open.spotify.com/artist/6GndH44hnFqySPvGrUQowx" target="_blank" class="footer-social">SP</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING PLAYER -->
+<div id="player">
+  <img class="player-thumb" src="https://murkmerch.com/cdn/shop/files/A2EDD8D3-C35A-435F-A57B-7B6C0FDF26B1.jpg?v=1762300562" alt="Now Playing" onerror="this.style.background='var(--bg3)'"/>
+  <div class="player-track"><h4 id="player-title">PHX</h4><p>MURKEMZ · MURK RADIO</p></div>
+  <div class="player-ctrl">
+    <button class="pctrl" onclick="prevTrack()">⏮</button>
+    <button class="pctrl-play" id="play-btn" onclick="togglePlay()">▶</button>
+    <button class="pctrl" onclick="nextTrack()">⏭</button>
+  </div>
+  <div class="player-prog">
+    <span class="prog-time" id="prog-current">1:24</span>
+    <div class="prog-track" onclick="seekTrack(event,this)"><div class="prog-fill" id="prog-fill"></div></div>
+    <span class="prog-time">3:47</span>
+  </div>
+  <span class="player-badge">MURK RADIO</span>
+  <button class="player-close" onclick="closePlayer()">✕</button>
+</div>
+
+<script>
+// ── CURSOR
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+setInterval(()=>{rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px'},16);
+document.querySelectorAll('a,button,[role=button]').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.width='14px';cur.style.height='14px';ring.style.width='44px';ring.style.height='44px'});el.addEventListener('mouseleave',()=>{cur.style.width='8px';cur.style.height='8px';ring.style.width='32px';ring.style.height='32px'})});
+
+// ── LOADER
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('gone'),2200));
+
+// ── CANVAS PARTICLES
+const canvas=document.getElementById('hero-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,particles=[];
+function resizeCanvas(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+class Particle{constructor(){this.reset()}reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.size=Math.random()*2+.5;this.speedX=(Math.random()-.5)*.4;this.speedY=(Math.random()-.5)*.4;this.opacity=Math.random()*.5+.1;this.life=0;this.maxLife=200+Math.random()*300}update(){this.x+=this.speedX;this.y+=this.speedY;this.life++;if(this.life>this.maxLife||this.x<0||this.x>W||this.y<0||this.y>H)this.reset()}draw(){ctx.save();ctx.globalAlpha=this.opacity*(1-this.life/this.maxLife);ctx.fillStyle='#C9A84C';ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();ctx.restore()}}
+for(let i=0;i<120;i++)particles.push(new Particle());
+function animateCanvas(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animateCanvas)}
+animateCanvas();
+
+// ── SCROLL FADE-IN
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');observer.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.fi').forEach(el=>observer.observe(el));
+
+// ── COUNTER ANIMATION
+function animateCount(el,target){const fmt=n=>n>=1000000?(n/1000000).toFixed(1)+'M':n>=1000?(n/1000).toFixed(1)+'K':n.toString();let current=0;const step=target/60;const timer=setInterval(()=>{current=Math.min(current+step,target);el.textContent=fmt(current);if(current>=target)clearInterval(timer)},20)}
+const countObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const target=parseInt(e.target.dataset.count);if(target)animateCount(e.target,target);countObs.unobserve(e.target)}})});
+document.querySelectorAll('[data-count]').forEach(el=>countObs.observe(el));
+
+// ── NAV SCROLL
+window.addEventListener('scroll',()=>{document.getElementById('navbar').style.background=window.scrollY>60?'rgba(8,8,8,.98)':'rgba(8,8,8,.92)'});
+
+// ── REVENUE CALCULATOR
+function updateCalc(fans){fans=parseInt(fans);document.getElementById('calc-fan-count').textContent=fans.toLocaleString();const avgSub=12;const sub=fans*avgSub;const merch=Math.round(fans*.15*30);const total=sub+merch;document.getElementById('calc-total').textContent='$'+total.toLocaleString();document.getElementById('calc-subs').textContent='$'+sub.toLocaleString();document.getElementById('calc-merch').textContent='$'+merch.toLocaleString();document.getElementById('calc-combined').textContent='$'+total.toLocaleString()}
+
+// ── NEWSLETTER
+function handleNewsletter(){const v=document.getElementById('nl-email').value.trim();if(!v||!v.includes('@')){document.getElementById('nl-email').style.borderColor='#C0392B';return}document.getElementById('nl-email').value='';document.getElementById('nl-email').placeholder='✓ Welcome to the movement.';document.getElementById('nl-email').style.borderColor='var(--gold)'}
+
+// ── PLAYER
+let playing=false,progW=35,progInt=null;
+const tracks=[{name:'PHX',artist:'Murkemz'},{name:'Survive ft. Inspectah Deck',artist:'Murkemz'},{name:'We Outside',artist:'Murkemz'},{name:'Against All Odds ft. Freeway',artist:'Murkemz'},{name:'I\'M ILL',artist:'Murkemz'}];
+let currentTrack=0;
+function openPlayer(){document.getElementById('player').classList.add('up');if(!playing)startPlay()}
+function closePlayer(){document.getElementById('player').classList.remove('up');if(playing)pausePlay()}
+function togglePlay(){playing?pausePlay():startPlay()}
+function startPlay(){playing=true;document.getElementById('play-btn').textContent='⏸';document.getElementById('radio-vinyl').classList.add('playing');clearInterval(progInt);progInt=setInterval(()=>{progW=progW>=100?0:progW+.05;document.getElementById('prog-fill').style.width=progW+'%'},100)}
+function pausePlay(){playing=false;document.getElementById('play-btn').textContent='▶';document.getElementById('radio-vinyl').classList.remove('playing');clearInterval(progInt)}
+function nextTrack(){currentTrack=(currentTrack+1)%tracks.length;updateTrack()}
+function prevTrack(){currentTrack=(currentTrack-1+tracks.length)%tracks.length;updateTrack()}
+function updateTrack(){const t=tracks[currentTrack];document.getElementById('player-title').textContent=t.name;document.getElementById('radio-track-name').textContent=t.name+' — '+t.artist;progW=0}
+function seekTrack(e,bar){const r=bar.getBoundingClientRect();progW=((e.clientX-r.left)/r.width)*100;document.getElementById('prog-fill').style.width=progW+'%'}
+</script>
+<script src="shared.js"></script>
+<script src="tour.js"></script>
+</body>
+</html>

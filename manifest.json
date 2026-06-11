@@ -1,0 +1,31 @@
+{
+  "name": "Plug City Records",
+  "short_name": "Plug City",
+  "description": "Stream, support, and own a piece of the movement. Powered by Murkemz and Plug City Records.",
+  "start_url": "/app.html",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#C9A84C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://murkmerch.com/cdn/shop/files/AAB814A5-32E3-4FF1-A00C-0DF47B57E8DA.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://murkmerch.com/cdn/shop/files/AAB814A5-32E3-4FF1-A00C-0DF47B57E8DA.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "screenshots": [
+    {
+      "src": "https://murkmerch.com/cdn/shop/files/IMG-8437.jpg?v=1763879859",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Plug City Records — Fan Dashboard"
+    }
+  ]
+}
