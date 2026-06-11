@@ -153,6 +153,21 @@
     }, 350);
   }
 
+  /* Cross-browser rounded rect (replaces ctx.roundRect which is Chrome 99+ only) */
+  function drawRoundRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.lineTo(x + w - r, y);
+    c.arcTo(x + w, y,     x + w, y + r,     r);
+    c.lineTo(x + w, y + h - r);
+    c.arcTo(x + w, y + h, x + w - r, y + h, r);
+    c.lineTo(x + r, y + h);
+    c.arcTo(x,     y + h, x,     y + h - r, r);
+    c.lineTo(x,     y + r);
+    c.arcTo(x,     y,     x + r, y,         r);
+    c.closePath();
+  }
+
   function drawOverlay(el) {
     var W = window.innerWidth, H = window.innerHeight;
     canvas.width = W; canvas.height = H;
@@ -169,16 +184,14 @@
 
     /* Cut spotlight hole */
     ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, rad);
+    drawRoundRect(ctx, x, y, w, h, rad);
     ctx.fill();
     ctx.globalCompositeOperation = 'source-over';
 
     /* Glow ring */
     ctx.strokeStyle = 'rgba(201,168,76,.55)';
     ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, rad);
+    drawRoundRect(ctx, x, y, w, h, rad);
     ctx.stroke();
   }
 
