@@ -1,10 +1,10 @@
 /* ================================================================
-   PLUG CITY RECORDS — shared.css
+   PLUG CITY RECORDS â€” shared.css
    Demo Nav Bar + Mobile Responsive Overrides
    Injected into all 4 Murkemz site pages
    ================================================================ */
 
-/* ── DEMO NAV BAR ──────────────────────────────────────────────── */
+/* â”€â”€ DEMO NAV BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 #demo-nav {
   position: fixed;
   bottom: 0;
@@ -131,7 +131,7 @@
 /* Push page content up so demo bar doesn't cover it */
 body { padding-bottom: 52px; }
 
-/* ── HAMBURGER BUTTON ──────────────────────────────────────────── */
+/* â”€â”€ HAMBURGER BUTTON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hamburger {
   display: none;
   position: fixed;
@@ -173,13 +173,13 @@ body { padding-bottom: 52px; }
 
 .sidebar-overlay.active { display: block; }
 
-/* ── MOBILE BREAKPOINT ─────────────────────────────────────────── */
+/* â”€â”€ MOBILE BREAKPOINT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 768px) {
 
   /* Show hamburger */
   .hamburger { display: flex !important; }
 
-  /* ── Sidebar → slide-out drawer ── */
+  /* â”€â”€ Sidebar â†’ slide-out drawer â”€â”€ */
   .app-shell {
     display: block !important;
     grid-template-columns: none !important;
@@ -206,7 +206,7 @@ body { padding-bottom: 52px; }
     padding-left: 3.6rem !important;
   }
 
-  /* ── KPI grids: 2-col on mobile ── */
+  /* â”€â”€ KPI grids: 2-col on mobile â”€â”€ */
   .kpi-row,
   .kpi-row-4,
   .kpi-row-3 {
@@ -214,7 +214,7 @@ body { padding-bottom: 52px; }
     gap: 0.75rem !important;
   }
 
-  /* ── General grids → single col ── */
+  /* â”€â”€ General grids â†’ single col â”€â”€ */
   .grid-2,
   .grid-3,
   .pass-grid,
@@ -248,7 +248,7 @@ body { padding-bottom: 52px; }
     padding: 0.6rem 1rem !important;
   }
 
-  /* ── Landing page / index.html ── */
+  /* â”€â”€ Landing page / index.html â”€â”€ */
   .hero-inner {
     grid-template-columns: 1fr !important;
     text-align: center;
@@ -299,9 +299,48 @@ body { padding-bottom: 52px; }
     gap: 2rem;
   }
 
-  /* Nav bar: hide desktop links, only show logo */
+  /* Nav bar: hide desktop links on mobile â€” hamburger reveals them */
   .nav-links {
     display: none !important;
+  }
+
+  /* Mobile nav dropdown â€” shown when hamburger is tapped on index page */
+  .nav-links.mobile-nav-open {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(8, 8, 14, 0.98) !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+    border-bottom: 1px solid rgba(201, 168, 76, 0.2) !important;
+    padding: 0.5rem 1.5rem 1rem !important;
+    z-index: 9998 !important;
+    list-style: none !important;
+  }
+
+  .nav-links.mobile-nav-open li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .nav-links.mobile-nav-open li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-links.mobile-nav-open a {
+    display: block;
+    padding: 0.9rem 0;
+    font-size: 1rem;
+    color: rgba(240, 240, 245, 0.85);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links.mobile-nav-open a:hover {
+    color: #C9A84C;
   }
 
   .nav-ctas {
