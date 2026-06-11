@@ -33,8 +33,7 @@
         }).join('') +
       '</div>' +
       '<span class="demo-nav-divider"></span>' +
-      /* PRODUCTION: replace phx/index.html with your PHX App Vercel URL */
-      '<a href="phx/index.html" class="demo-nav-switch" id="demo-other-app">PHX App →</a>' +
+      '<a href="https://phx-app.vercel.app" class="demo-nav-switch" id="demo-other-app">PHX App →</a>' +
       '<button class="demo-nav-close" aria-label="Close demo bar" ' +
         'onclick="document.getElementById(\'demo-nav\').style.display=\'none\'">✕</button>' +
     '</div>';
@@ -43,7 +42,45 @@
 
   // ── Mobile Sidebar Toggle ─────────────────────────────────────
   var sidebar = document.querySelector('.sidebar');
-  if (!sidebar) return; // index page has no sidebar
+
+  // Landing page (index.html) has no sidebar — add mobile hamburger for the top nav instead
+  if (!sidebar) {
+    var navLinks = document.querySelector('.nav-links');
+    if (!navLinks) return;
+
+    var ham = document.createElement('button');
+    ham.className = 'hamburger';
+    ham.id = 'hamburger-btn';
+    ham.setAttribute('aria-label', 'Toggle navigation menu');
+    ham.setAttribute('aria-expanded', 'false');
+    ham.innerHTML = '<span></span><span></span><span></span>';
+    document.body.appendChild(ham);
+
+    ham.addEventListener('click', function () {
+      var open = navLinks.classList.toggle('mobile-nav-open');
+      ham.setAttribute('aria-expanded', String(open));
+      ham.classList.toggle('open', open);
+    });
+
+    // Close when any nav link is tapped
+    navLinks.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        navLinks.classList.remove('mobile-nav-open');
+        ham.setAttribute('aria-expanded', 'false');
+        ham.classList.remove('open');
+      });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        navLinks.classList.remove('mobile-nav-open');
+        ham.setAttribute('aria-expanded', 'false');
+        ham.classList.remove('open');
+      }
+    });
+
+    return;
+  }
 
   // Hamburger button
   var ham = document.createElement('button');
