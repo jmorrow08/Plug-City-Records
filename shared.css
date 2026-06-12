@@ -1,10 +1,10 @@
 /* ================================================================
-   PLUG CITY RECORDS â€” shared.css
+   PLUG CITY RECORDS — shared.css
    Demo Nav Bar + Mobile Responsive Overrides
    Injected into all 4 Murkemz site pages
    ================================================================ */
 
-/* â”€â”€ DEMO NAV BAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── DEMO NAV BAR ──────────────────────────────────────────────── */
 #demo-nav {
   position: fixed;
   bottom: 0;
@@ -131,7 +131,7 @@
 /* Push page content up so demo bar doesn't cover it */
 body { padding-bottom: 52px; }
 
-/* â”€â”€ HAMBURGER BUTTON â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── HAMBURGER BUTTON ──────────────────────────────────────────── */
 .hamburger {
   display: none;
   position: fixed;
@@ -173,13 +173,13 @@ body { padding-bottom: 52px; }
 
 .sidebar-overlay.active { display: block; }
 
-/* â”€â”€ MOBILE BREAKPOINT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ── MOBILE BREAKPOINT ─────────────────────────────────────────── */
 @media (max-width: 768px) {
 
   /* Show hamburger */
   .hamburger { display: flex !important; }
 
-  /* â”€â”€ Sidebar â†’ slide-out drawer â”€â”€ */
+  /* ── Sidebar → slide-out drawer ── */
   .app-shell {
     display: block !important;
     grid-template-columns: none !important;
@@ -206,7 +206,7 @@ body { padding-bottom: 52px; }
     padding-left: 3.6rem !important;
   }
 
-  /* â”€â”€ KPI grids: 2-col on mobile â”€â”€ */
+  /* ── KPI grids: 2-col on mobile ── */
   .kpi-row,
   .kpi-row-4,
   .kpi-row-3 {
@@ -214,7 +214,7 @@ body { padding-bottom: 52px; }
     gap: 0.75rem !important;
   }
 
-  /* â”€â”€ General grids â†’ single col â”€â”€ */
+  /* ── General grids → single col ── */
   .grid-2,
   .grid-3,
   .pass-grid,
@@ -248,7 +248,7 @@ body { padding-bottom: 52px; }
     padding: 0.6rem 1rem !important;
   }
 
-  /* â”€â”€ Landing page / index.html â”€â”€ */
+  /* ── Landing page / index.html ── */
   .hero-inner {
     grid-template-columns: 1fr !important;
     text-align: center;
@@ -299,12 +299,12 @@ body { padding-bottom: 52px; }
     gap: 2rem;
   }
 
-  /* Nav bar: hide desktop links on mobile â€” hamburger reveals them */
+  /* Nav bar: hide desktop links on mobile — hamburger reveals them */
   .nav-links {
     display: none !important;
   }
 
-  /* Mobile nav dropdown â€” shown when hamburger is tapped on index page */
+  /* Mobile nav dropdown — shown when hamburger is tapped on index page */
   .nav-links.mobile-nav-open {
     display: flex !important;
     flex-direction: column !important;
