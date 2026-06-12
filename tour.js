@@ -13,66 +13,67 @@
 
     /* ─── PUBLIC LANDING PAGE ──────────────────────────────────── */
     'index.html': [
-      { sel: '#hero',       pos: 'bottom', title: '🎵 Welcome to Plug City Records',    desc: 'The official platform for Murkemz and Plug City Records — built to turn fan energy into real revenue. This hero section is the first thing visitors see.' },
-      { sel: '#phx',        pos: 'bottom', title: '📡 PHX is Climbing',               desc: 'The song PHX is gaining traction across all platforms. This live counter updates in real time as new streams come in — social proof that builds credibility.' },
-      { sel: '#music',      pos: 'top',    title: '🎶 The Catalog',                   desc: 'Six-track player with the full Plug City roster. Fans can stream right here without leaving the site — removing the barrier between discovery and fandom.' },
-      { sel: '#platform',   pos: 'top',    title: '💡 Why Build a Platform?',         desc: 'This section makes the case: streaming platforms keep 70% of fan dollars. Plug City is built to reverse that — keeping revenue inside the ecosystem.' },
-      { sel: '#plans',      pos: 'top',    title: '🎟️ Murk Pass Tiers',              desc: 'Three fan subscription tiers: Explorer ($7), Native ($15), Insider ($29). Each unlocks more exclusive content, perks, and access to Murkemz himself.' },
-      { sel: '#plat-preview', pos: 'top', title: '📱 Platform Preview — Interactive', desc: 'Toggle between Fan App, Artist View, and Label Admin to see exactly what each user type experiences. This is live demo mode.' },
-      { sel: '.pv-tab.active', pos: 'bottom', title: '🎵 Fan App View',              desc: 'The fan dashboard shows the subscriber\'s catalog access, active perks, and Murk Pass tier — a full music + loyalty experience.' },
-      { sel: '#radio',      pos: 'top',    title: '📻 Murk Radio',                   desc: 'Artist-owned. Algorithm-free. Fans stream Murkemz and the full Plug City roster directly — no Spotify middleman, no skips, no ads.' },
-      { sel: '#artists',    pos: 'top',    title: '🎤 The Roster',                   desc: 'Artists on Plug City Records are featured here with links to their individual artist pages. Each artist gets their own fan pass and revenue stream.' },
-      { sel: '#store',      pos: 'top',    title: '👕 Merch Integration',             desc: 'Direct link to murkmerch.com product catalog. Items live here on the platform so fans shop without leaving the experience.' },
-      { sel: '#calculator', pos: 'top',    title: '💰 Revenue Calculator',            desc: 'Interactive slider shows Murkemz and Bryce exactly what monthly revenue looks like at different subscriber counts. Great for investor conversations.' },
-      { sel: '#app-cta',    pos: 'top',    title: '📲 Install as App (PWA)',          desc: 'Fans can add Plug City to their home screen like a native app — no App Store required. Instant push notifications and offline access.' },
-      { sel: 'footer',      pos: 'top',    title: '✅ Full Ecosystem',                desc: 'From the landing page through subscription, merch, and events — every dollar stays inside the Plug City ecosystem. This is what independence looks like.' },
+      { sel: '#hero',         pos: 'bottom', title: '🎵 Welcome to Plug City Records',    desc: 'The official platform for Murkemz and Plug City Records — built to turn fan energy into real revenue. This hero section is the first thing visitors see.' },
+      { sel: '#phx',          pos: 'bottom', title: '📡 PHX is Climbing',                desc: 'The song PHX is gaining traction across all platforms. This live counter updates as new streams come in — social proof that builds credibility.' },
+      { sel: '#music',        pos: 'top',    title: '🎶 The Catalog',                    desc: 'Six-track player with the full Plug City roster. Fans can stream right here without leaving the site — removing the barrier between discovery and fandom.' },
+      { sel: '#platform',     pos: 'top',    title: '💡 Why Build a Platform?',          desc: 'Streaming platforms keep 70% of fan dollars. Plug City is built to reverse that — keeping revenue inside the ecosystem and in artists\' pockets.' },
+      { sel: '#plans',        pos: 'top',    title: '🎟️ Murk Pass Tiers',               desc: 'Three fan subscription tiers: Explorer ($4), Murk Mode ($12), Ayatollah ($29). Each unlocks more exclusive content, perks, and direct access to Murkemz.' },
+      { sel: '#plat-preview', pos: 'top',    title: '📱 Platform Preview — Interactive', desc: 'Toggle between Fan App, Artist View, and Label Admin to see exactly what each user type experiences on the platform.' },
+      { sel: '#radio',        pos: 'top',    title: '📻 Murk Radio',                    desc: 'Artist-owned. Algorithm-free. Fans stream Murkemz and the full Plug City roster directly — no Spotify middleman, no skips, no ads.' },
+      { sel: '#artists',      pos: 'top',    title: '🎤 The Roster',                    desc: 'Artists on Plug City Records are featured with links to their individual artist pages. Each artist gets their own fan pass and revenue stream.' },
+      { sel: '#store',        pos: 'top',    title: '👕 Merch Integration',              desc: 'Direct link to murkmerch.com product catalog. Items live here on the platform so fans shop without leaving the experience.' },
+      { sel: '#calculator',   pos: 'top',    title: '💰 Revenue Calculator',             desc: 'Interactive slider shows Murkemz and Bryce exactly what monthly revenue looks like at different subscriber counts. Great for investor conversations.' },
+      { sel: 'footer',        pos: 'top',    title: '✅ Full Ecosystem',                 desc: 'From landing page through subscription, merch, and events — every dollar stays inside the Plug City ecosystem. This is what independence looks like.' },
     ],
 
     /* ─── FAN APP DASHBOARD ────────────────────────────────────── */
     'app.html': [
-      { sel: '.sidebar',       pos: 'right', title: '🏠 Navigation Sidebar',          desc: 'Ten sections of content: Home, Discover, Events, Eats, Music, Podcasts, Drops, Barbershops, My Pass, and Profile. All your city culture in one place.' },
-      { sel: '.pass-chip',     pos: 'right', title: '🎟️ Your Murk Pass',             desc: 'This chip shows your current tier (Explorer / Native / Insider), your name, and your next billing date. It follows you on every screen.' },
-      { sel: '.topbar',        pos: 'bottom', title: '📍 City Feed Header',           desc: 'The topbar shows your current view and gives you quick access to notifications. The city pulse is always visible at the top.' },
-      { sel: '#view-home',     pos: 'right', title: '🏙️ City Feed — Home',            desc: 'Four KPI cards show your activity: streams this month, events attended, perks redeemed, and your current streak. Scroll down for the live city feed.' },
-      { sel: '#view-music',    pos: 'right', title: '🎵 Music Player',                desc: 'Full-screen player with the complete Plug City catalog. PHX, Against All Odds, Hadouken RMX — stream and skip. Insider tracks are gated by tier.' },
-      { sel: '.mini-player',   pos: 'top',   title: '🎧 Persistent Mini Player',      desc: 'Music keeps playing as you navigate between sections. The mini player sits at the bottom so you never have to stop the vibe.' },
-      { sel: '#view-events',   pos: 'right', title: '📅 Events Feed',                 desc: 'All Phoenix events, venues, and ticket links in one place. Filter by genre, venue, or date. Pass holders get early access to select shows.' },
-      { sel: '#view-eats',     pos: 'right', title: '🍽️ Eats + Perks',               desc: 'Partner restaurants listed with their active PHX Pass perks. Walk in, show your pass, get the discount — no coupon codes, no Groupon deal-hunting.' },
-      { sel: '#view-drops',    pos: 'right', title: '👗 Fashion Drops',               desc: 'Countdown timers on limited drops from PHX fashion brands. Pass holders get notified and often get first access before the public.' },
-      { sel: '#view-cuts',     pos: 'right', title: '💈 Barbershop Booking',          desc: 'Book your barber right from the app. Select a shop, pick a time, pay a deposit to hold your appointment — all without calling or texting.' },
-      { sel: '#view-mypass',   pos: 'right', title: '🪪 Digital Pass Card',           desc: 'Your official PHX Pass membership card. Add to Apple Wallet or Google Wallet for quick tap-and-show at any partner location.' },
-      { sel: '#view-podcasts', pos: 'right', title: '🎙️ Podcasts',                   desc: 'Six Phoenix-based podcasts: Murk Report, 602 Sports Talk, Desert Table, Shop Talk, RoRo Sessions, and PHX Hustle — all local voices.' },
-      { sel: '#view-profile',  pos: 'right', title: '👤 Profile + Activity',          desc: 'Your member profile, streaming history, and a Chart.js bar graph showing your monthly platform activity — how engaged are you with the city?' },
+      { sel: '.sidebar',        pos: 'right',  title: '🏠 Navigation Sidebar',          desc: 'Your Plug City command center: Home, Murk Radio, Discover, Community, AI Murk, Collectibles, Shoutouts, Fan Ownership, My Pass, Events, and Profile. Everything in one place.' },
+      { sel: '.user-chip',      pos: 'right',  title: '🎟️ Your Murk Pass',             desc: 'This chip shows your current tier and your name. Tap it to jump straight to your profile. It follows you on every screen inside the app.' },
+      { sel: '.topbar',         pos: 'bottom', title: '📍 Current View Header',         desc: 'The topbar always shows where you are in the app and gives quick access to notifications. The Plug City pulse is always at the top.' },
+      { sel: '#view-home',      view: 'home',       pos: 'right', title: '🏙️ Home Feed',                  desc: 'KPI cards show your activity this month: streams, events attended, perks redeemed, and your streak. Below is the live Plug City community feed.' },
+      { sel: '#view-radio',     view: 'radio',      pos: 'right', title: '📻 Murk Radio',                 desc: 'Stream the full Plug City catalog — PHX, Against All Odds, Hadouken RMX, and every release. Insider tier unlocks exclusive tracks and drop previews before anyone else.' },
+      { sel: '.mini-player',    pos: 'top',          title: '🎧 Persistent Mini Player',   desc: 'Music keeps playing as you navigate. The mini player stays pinned at the bottom — artwork, track name, controls, and progress bar always visible.' },
+      { sel: '#view-events',    view: 'events',     pos: 'right', title: '📅 Events Feed',                desc: 'Every Plug City and Phoenix event in one feed — venues, dates, ticket links. Pass holders get early access windows on select shows.' },
+      { sel: '#view-community', view: 'community',  pos: 'right', title: '💬 Fan Community',              desc: 'Direct connection between fans and the Plug City team. Post, react, and engage with other Murk Pass holders. This is the inner circle.' },
+      { sel: '#view-ai-murk',   view: 'ai-murk',    pos: 'right', title: '🤖 AI Murk — VIP Feature',     desc: 'An AI trained on Murkemz\'s voice and style. Insider tier members can chat with AI Murk for advice, content ideas, and behind-the-scenes knowledge.' },
+      { sel: '#view-shoutouts', view: 'shoutouts',  pos: 'right', title: '🎤 Shoutout Orders',            desc: 'Request a personalized shoutout from Murkemz. Set the occasion, add a message, and Murkemz records it personally. Insider tier members get priority.' },
+      { sel: '#view-discover',  view: 'discover',   pos: 'right', title: '🔍 Discover',                   desc: 'New drops, featured artists, trending tracks, and recent additions to the platform. Your gateway into the full Plug City ecosystem.' },
+      { sel: '#view-pass',      view: 'pass',       pos: 'right', title: '💳 My Murk Pass',               desc: 'Your digital membership card. Shows your current tier, perks unlocked, and subscription status. Add to Apple Wallet or Google Wallet for easy tap-and-show.' },
+      { sel: '#view-profile',   view: 'profile',    pos: 'right', title: '👤 Profile + Activity',         desc: 'Your member profile, streaming history, and a bar chart showing your monthly platform activity. See how deep you are in the Plug City ecosystem.' },
     ],
 
     /* ─── ARTIST DASHBOARD ─────────────────────────────────────── */
     'artist.html': [
-      { sel: '.sidebar',       pos: 'right', title: '🎤 Artist Command Center',        desc: 'The artist dashboard gives Murkemz and any signed artist full visibility into their platform performance. Overview, music, fans, events, merch, analytics, wallet, and label portal.' },
-      { sel: '.artist-chip',   pos: 'right', title: '✅ Verified Artist Chip',         desc: 'Shows the artist\'s name, verification badge, and current tier — Murkemz is marked as Label Owner which gives him admin-level permissions.' },
-      { sel: '#view-overview', pos: 'right', title: '📊 Revenue Overview',             desc: 'The top KPI row shows total subscribers, monthly revenue, streams, and retention rate — the four numbers that tell you if the platform is working.' },
-      { sel: '#view-music',    pos: 'right', title: '🎵 Track Management',             desc: 'Upload and manage tracks. Set which tracks are free, which require Explorer tier, which require Insider. Control your catalog access tier by tier.' },
-      { sel: '#view-fans',     pos: 'right', title: '👥 Fan Roster',                   desc: 'A list of every subscriber with their tier, join date, and engagement score. Filter by tier or activity level. These are your real fans.' },
-      { sel: '#view-events',   pos: 'right', title: '📅 Event Management',             desc: 'Create and manage your events. Set ticket prices, upload flyers, enable Insider early access, and track how many tickets are sold in real time.' },
-      { sel: '#view-merch',    pos: 'right', title: '👕 Merch Management',             desc: 'Sync with murkmerch.com or manage products directly. Set member-exclusive discounts for each pass tier — fans get a reason to stay subscribed.' },
-      { sel: '#view-analytics',pos: 'right', title: '📈 Deep Analytics',              desc: 'Stream counts by track, subscriber growth chart, geographic distribution, and top fan segments. Know exactly who\'s listening and where they are.' },
-      { sel: '#view-wallet',   pos: 'right', title: '💳 Artist Wallet',               desc: 'Every dollar earned, every payout issued. The wallet shows gross revenue, platform fee (20%), and net to artist — fully transparent, no surprises.' },
-      { sel: '#view-label',    pos: 'right', title: '🏷️ Label Portal',               desc: 'Communication channel between the artist and Plug City Records management (Murkemz + Bryce). Contracts, splits, and announcements all in one place.' },
+      { sel: '.sidebar',        pos: 'right',  title: '🎤 Artist Command Center',        desc: 'The artist dashboard gives Murkemz and any signed artist full visibility into their platform performance. Overview, upload, releases, fans, passes, analytics, revenue, beats, shoutouts, and label portal.' },
+      { sel: '.artist-chip',    pos: 'right',  title: '✅ Verified Artist Chip',         desc: 'Shows the artist\'s name and verification badge. Murkemz is marked as Label Owner which gives admin-level permissions on top of the standard artist view.' },
+      { sel: '#view-overview',  view: 'overview',   pos: 'right', title: '📊 Revenue Overview',           desc: 'The top KPI row shows total subscribers, monthly revenue, streams, and retention rate — the four numbers that tell you if the platform is working.' },
+      { sel: '#view-upload',    view: 'upload',     pos: 'right', title: '🎵 Upload & Release Music',      desc: 'Upload tracks directly to the platform. Set the title, artwork, tier access level (free, Explorer, Insider), and release date. Full control over your catalog.' },
+      { sel: '#view-releases',  view: 'releases',   pos: 'right', title: '💿 My Releases',                desc: 'Every track in your catalog — play count, tier gate, and revenue attribution. See which songs drive the most subscriptions and which need a push.' },
+      { sel: '#view-fans',      view: 'fans',       pos: 'right', title: '👥 Fan Database',               desc: 'Every subscriber with their tier, join date, and engagement score. Filter by tier or activity level. These are your real fans — own the relationship.' },
+      { sel: '#view-passes',    view: 'passes',     pos: 'right', title: '💳 Manage Fan Passes',          desc: 'Set the perks for each Murk Pass tier. Control exactly what Explorer, Murk Mode, and Ayatollah subscribers get — exclusive content, events, shoutouts.' },
+      { sel: '#view-analytics', view: 'analytics',  pos: 'right', title: '📈 Deep Analytics',             desc: 'Stream counts by track, subscriber growth chart, and geographic distribution. Know exactly who\'s listening, where they are, and which content drives retention.' },
+      { sel: '#view-revenue',   view: 'revenue',    pos: 'right', title: '💰 Revenue & Wallet',           desc: 'Every dollar earned, every payout issued. Gross revenue, platform fee (20%), and net to artist — fully transparent, no surprises. Payout history included.' },
+      { sel: '#view-beats',     view: 'beats',      pos: 'right', title: '🎹 Beat Portal',               desc: 'License beats to other artists on the platform. Set exclusive vs non-exclusive pricing, track who\'s purchased, and collect beat revenue automatically.' },
+      { sel: '#view-shoutouts', view: 'shoutouts',  pos: 'right', title: '🎤 Shoutout Order Queue',       desc: 'Incoming personalized shoutout requests from fans. Review each request, record your video, and deliver. Shoutouts are a high-margin direct-to-fan revenue stream.' },
+      { sel: '#view-label-app', view: 'label-app',  pos: 'right', title: '🏷️ Label Portal',              desc: 'Communication channel between you and Plug City Records management. Contracts, revenue splits, announcements, and A&R decisions — all in one place.' },
     ],
 
     /* ─── LABEL ADMIN DASHBOARD ────────────────────────────────── */
     'admin.html': [
-      { sel: '.sidebar',        pos: 'right', title: '⚙️ Label Operations Center',    desc: 'The admin dashboard gives Murkemz and Bryce full control over the entire platform. Everything from revenue to artist management to push notifications.' },
-      { sel: '.admin-chip',     pos: 'right', title: '👑 Admin Access — Both Owners', desc: 'Shows Murkemz + Bryce as co-admins. This chip confirms you\'re in the highest-permission view of the platform.' },
-      { sel: '#view-command',   pos: 'right', title: '🖥️ Command Center',             desc: 'Six live KPI cards, a revenue bar chart, revenue mix doughnut, and a live alert feed that updates every 5 seconds. This is real-time platform pulse.' },
-      { sel: '#view-revenue',   pos: 'right', title: '💰 Revenue OS',                 desc: 'The full 10-stream P&L table showing gross revenue, 20% platform fee, and net to artists. A growth line chart and revenue-by-stream breakdown.' },
-      { sel: '#view-members',   pos: 'right', title: '👥 Member Intelligence',         desc: 'Total subscriber count by tier, churn rate, new sign-ups this month, and average revenue per user — the metrics that predict platform longevity.' },
-      { sel: '#view-partners',  pos: 'right', title: '🤝 Partner Management',          desc: 'All business and creator partner applications, approval status, and active roster. Track which Founding Partners have completed their 3 social posts.' },
-      { sel: '#view-events',    pos: 'right', title: '📅 Platform Events',             desc: 'Every event listed across all artists on the platform. Monitor ticket sales, flag capacity issues, and feature events on the landing page.' },
-      { sel: '#view-feed',      pos: 'right', title: '📰 Content Feed',               desc: 'Approve, pin, or remove community posts. Flag content, feature artist announcements, and control what rises to the top of the city feed.' },
-      { sel: '#view-push',      pos: 'right', title: '📣 Push Notifications',          desc: 'Send targeted blasts to all members or by tier. 84% average open rate. Use for new drops, events, exclusive announcements, and merch launches.' },
-      { sel: '#view-verticals', pos: 'right', title: '📊 Vertical Health',            desc: 'A health score for all 8 platform verticals — music, eats, events, fashion, podcasts, barbershops, art, and sports. See where to push growth next.' },
-      { sel: '#view-reports',   pos: 'right', title: '📋 P&L Reports + Projections',  desc: 'Monthly P&L summary and a 12-month projection chart showing conservative vs optimistic revenue scenarios. This is what you show investors.' },
-      { sel: '#view-settings',  pos: 'right', title: '⚙️ Platform Settings',          desc: 'Global settings: platform fee rate, tier pricing, notification preferences, and API integrations. Full control over how the platform operates.' },
+      { sel: '.sidebar',        pos: 'right',  title: '⚙️ Label Operations Center',     desc: 'The admin dashboard gives Murkemz and Bryce full control over the entire Plug City platform — revenue, artists, content, campaigns, fan data, and platform settings.' },
+      { sel: '.topbar',         pos: 'bottom', title: '🖥️ Admin Topbar',               desc: 'Current view title and quick-action buttons. From here Murkemz and Bryce can schedule drops, launch campaigns, or review A&R submissions in seconds.' },
+      { sel: '#view-command',   view: 'command',    pos: 'right', title: '🖥️ Command Center',             desc: 'Live KPI cards, a revenue bar chart, and a real-time alert feed. This is the full platform heartbeat — everything that\'s happening right now.' },
+      { sel: '#view-revenue',   view: 'revenue',    pos: 'right', title: '💰 Revenue OS',                 desc: 'The full P&L table for every revenue stream — subscriptions, merch, events, shoutouts, licensing. Each row shows gross, fee, and net to the label.' },
+      { sel: '#view-social',    view: 'social',     pos: 'right', title: '📡 Social Analytics',           desc: 'Track platform-wide social performance. See which content is driving the most profile visits, subscription conversions, and follower growth across channels.' },
+      { sel: '#view-release',   view: 'release',    pos: 'right', title: '🗓️ Release Manager',           desc: 'Schedule upcoming drops, coordinate release dates across distribution channels, and plan marketing pushes. Every release gets a campaign timeline.' },
+      { sel: '#view-roster',    view: 'roster',     pos: 'right', title: '🎤 Artist Roster',              desc: 'Every artist on the platform: their subscriber count, monthly revenue, catalog size, and contract status. The full roster at a glance.' },
+      { sel: '#view-fans-db',   view: 'fans-db',    pos: 'right', title: '👥 Fan Database',               desc: 'Every subscriber across all artists — tier breakdown, join date, geographic distribution. Export to CSV for targeted campaigns.' },
+      { sel: '#view-anr',       view: 'anr',        pos: 'right', title: '🔍 A&R Pipeline',               desc: 'Five incoming artist applications flagged for review. Listen to tracks, view their social metrics, and approve or decline for the Plug City roster.' },
+      { sel: '#view-campaigns', view: 'campaigns',  pos: 'right', title: '📢 Marketing Campaigns',        desc: 'Active email and push notification campaigns. Track open rates, click-throughs, and conversions. Two campaigns are live — monitoring in real time.' },
+      { sel: '#view-push',      view: 'push',       pos: 'right', title: '📲 Push Notifications',         desc: 'Send targeted push blasts to all members or filter by tier. 84% average open rate. Use for new drops, events, exclusive access windows, and merch launches.' },
+      { sel: '#view-reports',   view: 'reports',    pos: 'right', title: '📋 P&L Reports + Projections',  desc: 'Monthly P&L summary and a 12-month projection chart showing conservative vs optimistic revenue scenarios. This is what you show investors.' },
+      { sel: '#view-settings',  view: 'settings',   pos: 'right', title: '⚙️ Platform Settings',         desc: 'Global controls: platform fee rate, tier pricing, notification preferences, and API integrations. Full control over how the Plug City platform operates.' },
     ],
   };
 
@@ -86,7 +87,7 @@
   /* Inject tour CSS */
   var style = document.createElement('style');
   style.textContent = [
-    '#tour-canvas{position:fixed;inset:0;z-index:99970;pointer-events:none;transition:opacity .3s}',
+    '#tour-canvas{position:fixed;inset:0;z-index:99970;pointer-events:none;display:none}',
     '#tour-tooltip{position:fixed;z-index:99975;background:#111122;border:1.5px solid rgba(201,168,76,.5);border-radius:16px;padding:1.4rem 1.5rem;width:320px;box-shadow:0 24px 64px rgba(0,0,0,.7);display:none;font-family:\'Space Grotesk\',sans-serif}',
     '.tt-step{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.5rem}',
     '.tt-title{font-size:1rem;font-weight:800;color:#F0F0F5;margin-bottom:.5rem;line-height:1.3}',
@@ -135,22 +136,37 @@
   }
 
   function showStep() {
-    var step = steps[current];
-    var el = document.querySelector(step.sel);
+    var step, el;
 
-    /* If element not visible (in a hidden view), skip to next */
-    if (!el || el.offsetParent === null) {
-      if (current < steps.length - 1) { current++; showStep(); } else { endTour(); }
-      return;
+    /* Iteratively skip steps whose element doesn't exist in the DOM */
+    while (current < steps.length) {
+      step = steps[current];
+      el = document.querySelector(step.sel);
+      if (el) break;
+      current++;
+    }
+    if (current >= steps.length) { endTour(); return; }
+
+    /* Activate the containing view if specified */
+    if (step.view && typeof window.showView === 'function') {
+      window.showView(step.view);
     }
 
-    /* Scroll element into view */
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
+    /* Wait for DOM to update after view activation, then check real visibility */
     setTimeout(function () {
-      drawOverlay(el);
-      positionTooltip(el, step);
-    }, 350);
+      var rect = el.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) {
+        /* Still hidden even after activation — skip this step */
+        current++;
+        showStep();
+        return;
+      }
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(function () {
+        drawOverlay(el);
+        positionTooltip(el, step);
+      }, 300);
+    }, 120);
   }
 
   /* Cross-browser rounded rect (replaces ctx.roundRect which is Chrome 99+ only) */
